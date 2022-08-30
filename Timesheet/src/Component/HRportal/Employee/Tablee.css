@@ -1,0 +1,13 @@
+.edt {
+    color: #1890ff;
+    font-weight: bold;
+}
+
+.add {
+    color: #1890ff;
+    font-weight: bold;
+}
+
+.table_border_antd {
+    border: 2px blue;
+}
