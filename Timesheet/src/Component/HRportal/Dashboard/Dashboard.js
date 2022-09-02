@@ -12,12 +12,11 @@ const Dashboard = (props) => {
 
   const [timesheetStatus, setTimesheetStatus] = useState([]);
   const [colorScale, setColorScale] = useState([]);
-  const currentDate = new Date();
-  const [year, setYear] = useState((currentDate.getFullYear()));
-  const [month, setMonth] = useState((currentDate.getMonth()));
+  // const currentDate = new Date();
+  const [year, setYear] = useState((new Date().getFullYear()));
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [count, setCount] = useState(0);
   const toke = sessionStorage.getItem("token");
-
   const [yrDropdown, setYrDropdown] = useState([]);
   const dphrs = async () => {
     const details1 = await axios.get("https://timesheetjy.azurewebsites.net/api/Admin/GetTimeSheets", {

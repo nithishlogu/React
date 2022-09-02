@@ -732,12 +732,6 @@ function ReadProject() {
                                     ]}
                                 >
                                     <DatePicker
-                                        disabledDate={
-                                            (current) => {
-                                                let customDate = moment().format("YYYY-MM-DD");
-                                                return (current && current < moment(customDate, "YYYY-MM-DD"));
-                                            }
-                                        }
                                         min={endValue}
                                         format="YYYY-MM-DD"
                                         value={startValue}
