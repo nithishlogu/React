@@ -7,7 +7,7 @@ import Sidersbar from "../ESidebar";
 const EUserprofile = () => {
     const { Sider } = Layout;
     const [users, setUsers] = useState([]);
-    const emails = sessionStorage.getItem("email");
+    const emails = sessionStorage.getItem("mailId");
     const toke = sessionStorage.getItem("token");
 
     useEffect(() => {

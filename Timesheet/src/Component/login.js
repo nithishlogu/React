@@ -54,6 +54,8 @@ const Login = () => {
             data: e
         }).then((r) => {
             sessionStorage.setItem("token", r.data.token);
+            sessionStorage.setItem("mailId", e.username);
+            sessionStorage.setItem("id", r.data.employee_Id)
             settoken(r.data.token);
             setMessage(r.request.status, e.username + " Login Successfull");
             AddProjectForm.resetFields();

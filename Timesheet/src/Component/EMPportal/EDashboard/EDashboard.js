@@ -9,10 +9,11 @@ import Sidersbar from "../ESidebar";
 const EDashboard = () => {
     const [sts, setsts] = useState([]);
     const toke = sessionStorage.getItem("token");
+    const id = sessionStorage.getItem("id");
     const { Sider } = Layout;
 
     const clientdtl = async () => {
-        const res = await axios("https://timesheetjy.azurewebsites.net/api/Employee/GetByDashboard?Employee_Id=1", {
+        const res = await axios(`https://timesheetjy.azurewebsites.net/api/Employee/GetByDashboard?Employee_Id=${id}`, {
             headers: {
                 'Authorization': `Bearer ${toke}`
             }
@@ -24,8 +25,8 @@ const EDashboard = () => {
     }, []);
 
     const data = sts;
-
-    if (data.status == 'Approved') {
+debugger;
+    if (data.status == "Approved") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -48,7 +49,7 @@ const EDashboard = () => {
             </div>
         )
     }
-    else if (data.status == 'Rejected') {
+    else if (data.status == "Rejected") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -71,7 +72,7 @@ const EDashboard = () => {
             </div>
         )
     }
-    else if (data.status == 'Pending') {
+    else if (data.status == "Pending") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -109,6 +110,9 @@ const EDashboard = () => {
                     <h1 id="xy" style={{ color: 'lightskyblue', marginLeft: -65 }}><center>Timesheet {data.month} {data.year} status</center></h1>
                 </div>
                 <br /><br /><br />
+                <div>
+                    <CheckOutlined style={{ marginTop: -90, marginLeft: 588, fontSize: 90, color: "skyblue", position: "fixed" }} />
+                </div>
                 <div style={{ marginLeft: 350 }}>
                     <Space direction="horizontal">
                         <Input value="Approved" readOnly />

@@ -7,12 +7,12 @@ const Userprofile = () => {
   const { Sider, Content } = Layout;
   const [searchparams] = useSearchParams();
   const toke = sessionStorage.getItem("token");
-  const emails = sessionStorage.getItem("email");
+  const mail = sessionStorage.getItem("mailId");
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     debugger;
-    axios.get("https://timesheetjy.azurewebsites.net/api/Admin/GetUserProfile?id=3", {
+    axios.get(`https://timesheetjy.azurewebsites.net/api/Admin/GetUserProfile?mail_Id=${mail}`, {
       headers: {
         'Authorization': `Bearer ${toke}`
       }
