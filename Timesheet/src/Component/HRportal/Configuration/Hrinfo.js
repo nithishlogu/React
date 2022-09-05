@@ -190,10 +190,15 @@ const Hrinfo = () => {
         }
       })
         .then(data => setFilteredClient(data.data))
+        const timeout1 = setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        return () => clearTimeout(timeout1);
     }).catch((error) => {
       setMessage(error.request.status, error.response.data);
     })
   }
+  
 
   const onEdit = (record) => {
     setIsEditing(true);

@@ -36,7 +36,7 @@ const Tablee = () => {
       message.error("Page not Found");
     }
     else if (statusCode == 400) {
-      message.error(responseMessage, 5);
+      message.error(responseMessage, 10);
     }
     else if (statusCode == 500) {
       message.error("Internal Server Error");
@@ -132,16 +132,15 @@ const Tablee = () => {
         first_Name: row.first_Name,
         last_Name: row.last_Name,
         employee_Type_Id: row.employee_Type_Name,
-        employee_code: row.employee_code,
         joining_Date: row.joining_Date,
         end_Date: row.end_Date,
         designation_Id: row.designation_Name,
+        employee_code: row.employee_code,
         alternate_Email: row.alternate_Email,
         reporting_Manager1: row.reporting_Manager1,
         email: row.email,
         contact_No: row.contact_No
       });
-    debugger
 
     setIsEditing(!isEditing);
   }
@@ -152,6 +151,7 @@ const Tablee = () => {
 
   const handleEdit = async (e) => {
 
+    debugger
 
     await axios({
       method: 'put',
@@ -169,8 +169,8 @@ const Tablee = () => {
         reporting_Manager1: e.reporting_Manager1,
         employee_Type_Id: editEmployee_Type_Id,
         designation_Id: editDesignation,
+        employee_code:e.employee_code,
         email: e.email,
-        employee_code: e.employee_code,
         contact_No: e.contact_No,
         alternate_Email: e.alternate_Email,
         joining_Date: e.joining_Date,
@@ -214,15 +214,16 @@ const Tablee = () => {
       width: 100
     },
     {
+      title: 'Employee code',
+      dataIndex: 'employee_code',
+      width: 100
+    },
+    {
       title: 'Employee Name',
       render: (record) => (
         <span>{record.first_Name} {record.last_Name}</span>
       ),
       width: 100
-    },
-    {
-      title: 'employee_code',
-      dataIndex: 'employee_code'
     },
     {
       title: 'Type',
@@ -251,7 +252,6 @@ const Tablee = () => {
       render: (joining_Date) => { return (<p>{moment(joining_Date).format('DD-MM-YYYY')}</p>) },
       width: 100
     },
-
     {
       title: 'End Date',
       dataIndex: 'end_Date',
@@ -293,7 +293,6 @@ const Tablee = () => {
   }
 
   const buttonOk = () => {
-    setIsModalVisible(false);
     addEmp();
   };
 
@@ -344,12 +343,12 @@ const Tablee = () => {
   const [email, setemail] = useState('');
   const [designation_Id, setdesignation_Id] = useState('');
   const [contact_No, setcontact_No] = useState('');
-  const [employee_code, setemployee_code] = useState('');
   const [joining_Date, setjoining_Date] = useState('');
   const [end_Date, setEnd_Date] = useState('');
   const [alternate_Email, setAlternate_Email] = useState('');
+  const [employee_code, setemployee_code] = useState('');
   const setDefault = () => {
-    setEmployeeId(''); setEmployeeFstName(''); setEmployeeLstName(''); setreporting_Manager1(''); setemployee_Type_Id(''); setemail(''); setdesignation_Id(''); setAlternate_Email(''); setcontact_No(''); setStartValue(''); setEndValue('');
+    setEmployeeId(''); setEmployeeFstName(''); setemployee_code(''); setEmployeeLstName(''); setreporting_Manager1(''); setemployee_Type_Id(''); setemail(''); setdesignation_Id(''); setAlternate_Email(''); setcontact_No(''); setStartValue(''); setEndValue('');
   }
 
   const addEmp = async () => {
@@ -368,7 +367,6 @@ const Tablee = () => {
       url: 'https://timesheetjy.azurewebsites.net/api/Admin/AddEmployee',
       data: {
         first_Name,
-        employee_code,
         last_Name,
         reporting_Manager1,
         employee_Type_Id: change,
@@ -379,10 +377,10 @@ const Tablee = () => {
         contact_No,
         joining_Date,
         alternate_Email,
+        employee_code,
         end_Date: "----"
       }
     }).then((r) => {
-      debugger;
       setMessage(r.request.status, first_Name + " " + last_Name + " Added Successfully");
       axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAllEmployee", {
         headers: {
@@ -398,7 +396,15 @@ const Tablee = () => {
       return () => clearTimeout(timeout1);
 
     }).catch((error) => {
-      setMessage(error.request.status, error.response.data);
+
+      console.log(error);
+      debugger
+     
+        setMessage(error.request.status, error.response.data.errors.Alternate_Email[0]);
+        debugger
+        console.log(error.response.data.errors.Alternate_Email[0]);
+        debugger
+      
     })
   }
 
@@ -553,7 +559,6 @@ const Tablee = () => {
                   footer={<><Button type="danger" onClick={buttonCancel}>Cancel</Button> <Button type="success" onClick={() => {
                     form.validateFields().then((values) => {
                       buttonOk(values)
-                      form.resetFields();
                     })
                       .catch((info) => {
                       });
@@ -576,7 +581,7 @@ const Tablee = () => {
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5}>
-                          <p style={{ marginLeft: 10, fontWeight: "bold" }}>employee_code<span style={{ color: "red" }}>*</span></p>
+                          <p style={{ marginLeft: 10, fontWeight: "bold" }}>Type<span style={{ color: "red" }}>*</span></p>
                         </Col>
                         <Col span={1}></Col>
                       </Row>
@@ -610,17 +615,6 @@ const Tablee = () => {
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5}>
-                          <Form.Item name="employee_code" rules={[{ required: true, message: 'Please enter the Name' }, {
-                            pattern: new RegExp(/^[a-z A-Z]+$/i),
-                            message: "It does not accept numbers and special characters"
-                          }]}>
-                            <Input type='text' id='employee_code' value={employee_code}
-                              onChange={(e) => setemployee_code(e.target.value)}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={1}></Col>
-                        {/* <Col span={5}>
                           <Form.Item
                             name="type"
                             rules={[{ required: true, message: 'Please Select the Type' }]}>
@@ -630,7 +624,7 @@ const Tablee = () => {
                               })}
                             </Select>
                           </Form.Item>
-                        </Col> */}
+                        </Col>
                       </Row>
 
                       <Row style={{ marginTop: 10 }}>
@@ -647,13 +641,9 @@ const Tablee = () => {
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5}>
-                          <p style={{ marginLeft: 10, fontWeight: "bold" }}>Type<span style={{ color: "red" }}>*</span></p>
-                        </Col>
-                        <Col span={1}></Col>
-                        {/* <Col span={5}>
                           <p style={{ marginLeft: 10, fontWeight: "bold" }}>Reporting Manager</p>
                         </Col>
-                        <Col span={1}></Col> */}
+                        <Col span={1}></Col>
                       </Row>
 
                       <Row>
@@ -688,7 +678,7 @@ const Tablee = () => {
                           />
                         </Col>
                         <Col span={1}></Col>
-                        <Col span={5}>
+                        <Col span={6}>
                           <Form.Item name="designation" rules={[{ required: true, message: 'Please Select the Designation' }]}>
                             <Select style={{ width: 150 }} onChange={(value) => { setdesignation_Id(value) }} placeholder="Select One">
                               {(desigDropdown && desigDropdown.length > 0) && desigDropdown.map((dpDown) => {
@@ -697,20 +687,30 @@ const Tablee = () => {
                             </Select>
                           </Form.Item>
                         </Col>
-                        <Col span={1}></Col>
                         <Col span={5}>
-                          <Form.Item
-                            name="type"
-                            rules={[{ required: true, message: 'Please Select the Type' }]}>
-                            <Select onChange={(value) => { setemployee_Type_Id(value) }} placeholder="Select One">
-                              {(typeDropdown && typeDropdown.length > 0) && typeDropdown.map((typDown) => {
-                                return <Option value={typDown.employee_Type_Id}>{typDown.employee_Type_Name}</Option>
-                              })}
-                            </Select>
+                          <Form.Item name="reporting_Manager1"
+                          // rules={[{ required: true, message: 'Please enter the Reporting Manageer' }]}
+                          >
+                            <Input id='reporting_Manager1' value={reporting_Manager1}
+                              onChange={(e) => setreporting_Manager1(e.target.value)} />
                           </Form.Item>
                         </Col>
-
-
+                        <Col span={1}></Col>
+                      </Row>
+                      <Row>
+                        <Col span={5}>
+                          <p style={{ fontWeight: "bold" }}>Employee Code<span style={{ color: "red" }}>*</span></p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={5}>
+                        <Form.Item name="employee_code"
+                          rules={[{ required: true, message: 'Please enter the Employee Code' }]}
+                          >
+                            <Input id='employee_code' value={employee_code}
+                              onChange={(e) => setemployee_code(e.target.value)} />
+                          </Form.Item>
+                        </Col>
                       </Row>
 
                       <h2 className="edt" style={{ marginTop: 20, fontWeight: "bold", color: "blue" }}>CONTACT INFO</h2>
@@ -725,10 +725,6 @@ const Tablee = () => {
                         <Col span={1}></Col>
                         <Col span={5}>
                           <p style={{ fontWeight: "bold", marginLeft: 10 }}>Contact No<span style={{ color: "red" }}>*</span></p>
-                        </Col>
-                        <Col span={1}></Col>
-                        <Col span={5}>
-                          <p style={{ marginLeft: 10, fontWeight: "bold" }}>Reporting Manager</p>
                         </Col>
                         <Col span={1}></Col>
                       </Row>
@@ -755,25 +751,17 @@ const Tablee = () => {
                         <Col span={1}></Col>
                         <Col span={5}>
                           <Form.Item name="contact_No" type={"text"} rules={[{ required: true, message: 'Please enter the Phone Number' }, {
-                            pattern: new RegExp(/^\d{10}$/),
-                            message: "Field does not accept Letters"
+                            pattern: new RegExp(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/),
+                            message: "Field must contain 10 numbers"
+                          },{
+                            pattern: new RegExp(/^[0-9\b]+$/),
+                            message: "Field must only contain numbers"
                           }]}>
                             <Input type={"text"} id='contact_No' value={contact_No} maxLength={10}
                               onChange={(e) => setcontact_No(e.target.value)} />
                           </Form.Item>
-
                         </Col>
                         <Col span={1}></Col>
-                        <Col span={5}>
-                          <Form.Item name="reporting_Manager1"
-                          // rules={[{ required: true, message: 'Please enter the Reporting Manageer' }]}
-                          >
-                            <Input id='reporting_Manager1' value={reporting_Manager1}
-                              onChange={(e) => setreporting_Manager1(e.target.value)} />
-                          </Form.Item>
-                        </Col>
-                        <Col span={1}></Col>
-
                       </Row>
                     </Form>
                   </div>
@@ -966,6 +954,20 @@ const Tablee = () => {
                     </Form.Item>
                   </Col><Col span={1}></Col>
                 </Row>
+                <Row>
+                  <Col span={5}>
+                    <p style={{ marginLeft: 10, fontWeight: "bold" }}>Reporting Manager</p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={5}>
+                  <Form.Item
+                      name='employee_code'
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
                 <h2 className="edt" style={{ marginTop: 20, fontWeight: "bold", color: "blue" }}>CONTACT INFO</h2>
                 <Row>
@@ -979,10 +981,6 @@ const Tablee = () => {
                   <Col span={1}></Col>
                   <Col span={5}>
                     <p style={{ fontWeight: "bold", marginLeft: 10 }}>Contact No<span style={{ color: "red" }}>*</span></p>
-                  </Col>
-                  <Col span={1}></Col>
-                  <Col span={5}>
-                    <p style={{ fontWeight: "bold", marginLeft: 10 }}>employee_code<span style={{ color: "red" }}>*</span></p>
                   </Col>
                   <Col span={1}></Col>
                 </Row>
@@ -1033,16 +1031,7 @@ const Tablee = () => {
                     >
                       <Input maxLength={10} />
                     </Form.Item>
-                  </Col><Col span={1}></Col>
-                  <Col span={5}>
-                    <Form.Item name="employee_code">
-                      <Input type='text' id='employee_code' value={employee_code}
-                        onChange={(e) => setemployee_code(e.target.value)}
-                      />
-                    </Form.Item>
-                  </Col><Col span={1}></Col>
-
-
+                  </Col>
                 </Row>
                 <div style={{ marginTop: 20 }}>
                   <Link state={{ id: editEmployee_Id, editEmployee_Name: fullName }} to="/employee/Previouschange" ><h2 style={{ color: "blue" }}><u>View Previous Changes</u></h2></Link>
@@ -1053,19 +1042,6 @@ const Tablee = () => {
                     <Button type="success" htmlType="submit">Save Changes</Button></Space>
                 </Form.Item>
               </Form>
-
-
-              {/* <Form.Item name="employee_code" rules={[{ required: true, message: 'Please enter the Name' }, {
-                pattern: new RegExp(/^[a-z A-Z]+$/i),
-                message: "It does not accept numbers and special characters"
-              }]}>
-                <Input type='text' id='employee_code' value={employee_code}
-                  onChange={(e) => setemployee_code(e.target.value)}
-                />
-              </Form.Item> */}
-
-
-
 
             </Modal>
 

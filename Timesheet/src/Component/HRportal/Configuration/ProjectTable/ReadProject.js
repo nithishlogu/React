@@ -55,7 +55,6 @@ function ReadProject() {
     // const addProjctName = Form.useWatch('addProjectName', addProjectForm);
 
     const setMessage = (statusCode, responseMessage) => {
-        debugger;
         if (statusCode == 200) {
             message.success(responseMessage, 5);
         }
@@ -252,25 +251,34 @@ function ReadProject() {
     }
 
     const Activate = () => {
+        var activateProjectName = '';
         selectedRows.forEach(element => {
             axios({
                 method: 'put',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Access-Control-Allow-Origin': '*',
-                  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                  'Authorization': `Bearer ${toke}`
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                    'Authorization': `Bearer ${toke}`
                 },
                 url: 'https://timesheetjy.azurewebsites.net/api/Admin/EditProjectIsActive',
                 data: {
                     id: element.project_Id,
                     is_Active: true
-                },     
-              }).then((r) => {
-                setMessage(r.request.status, element.project_Name + " Activated Successfully");
-                debugger
-            });
+                },
+            })
+                .then((r) => {
+                    // setMessage(r.request.status, element.project_Name + " Activated Successfully");
+                    getClients();
+                });
+            activateProjectName = activateProjectName + element.project_Name + ", ";
+            console.log(activateProjectName);
         });
+        // str = str.substring(0, str.length - 2)
+        activateProjectName = activateProjectName.substring(0, activateProjectName.length - 2) + " ";
+        // setMessage(200, activateProjectName + selectedRows.length > 1 ? 'are' : 'is' + " Activated Successfully");
+        // const alertMessage = activateProjectName + length > 1 ? " is" : " are" + " Activated Successfully";
+        setMessage(200, activateProjectName + " Activated Successfully");
         setIsActivateModal(false);
         getClients();
         setDeactivate(false);
@@ -296,12 +304,12 @@ function ReadProject() {
         {
             title: "Start Date",
             dataIndex: 'project_Start_Date',
-            // render: (project_Start_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(project_Start_Date).format('DD - MM - YYYY')}</p>) },
+            render: (project_Start_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(project_Start_Date).format('DD - MM - YYYY')}</p>) },
         },
         {
             title: "End Date",
             dataIndex: 'project_End_Date',
-            // render: (project_End_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(project_End_Date).format('DD - MM - YYYY')}</p>) },
+            render: (project_End_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(project_End_Date).format('DD - MM - YYYY')}</p>) },
         }
     ];
 
@@ -378,27 +386,31 @@ function ReadProject() {
 
     const handleConfirmOk = () => {
         setIsConfirmModalVisible(false);
+        var deactivateProjectName = '';
         selectedRows.forEach(element => {
             axios({
                 method: 'put',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Access-Control-Allow-Origin': '*',
-                  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                  'Authorization': `Bearer ${toke}`
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                    'Authorization': `Bearer ${toke}`
                 },
                 url: 'https://timesheetjy.azurewebsites.net/api/Admin/EditProjectIsActive',
                 data: {
                     id: element.project_Id,
                     is_Active: false
-                },     
-              }).then((r) => {
-                setMessage(r.request.status, element.project_Name + "  " + "Deactivated Successfully");
-                debugger
-                console.log("deactivated")
-                getClients();
+                },
             })
+                .then((r) => {
+                    // setMessage(r.request.status, element.project_Name + "  " + "Deactivated Successfully");
+                    // console.log("deactivated")
+                    getClients();
+                })
+            deactivateProjectName = deactivateProjectName + element.project_Name + ', '
         });
+        deactivateProjectName = deactivateProjectName.substring(0, deactivateProjectName.length - 2);
+        setMessage(200, deactivateProjectName + ' Deactivated Successfully')
         const timeset = setTimeout(() => {
             window.location.reload();
         }, 3500);
@@ -601,7 +613,7 @@ function ReadProject() {
                                 }}
                                 scroll={{
                                     y: 300
-                                  }}
+                                }}
                             />
                             :
                             <Table
@@ -624,7 +636,7 @@ function ReadProject() {
                                 }}
                                 scroll={{
                                     y: 250
-                                  }}
+                                }}
                             />
                         }
                         {
@@ -732,7 +744,6 @@ function ReadProject() {
                                     ]}
                                 >
                                     <DatePicker
-
                                         min={endValue}
                                         format="YYYY-MM-DD"
                                         value={startValue}

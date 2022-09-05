@@ -205,9 +205,9 @@ const Dashboard = (props) => {
                   <Option value={7}><b>Jul</b></Option>
                   <Option value={8}><b>Aug</b></Option>
                   <Option value={9}><b>Sep</b></Option>
-                  <Option value={10}><b>Oct</b></Option>
+                  {/* <Option value={10}><b>Oct</b></Option>
                   <Option value={11}><b>Nov</b></Option>
-                  <Option value={12}><b>Dec</b></Option>
+                  <Option value={12}><b>Dec</b></Option> */}
                 </Select>
               </div>
             </Space>
