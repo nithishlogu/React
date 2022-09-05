@@ -25,14 +25,26 @@ function ClientRead() {
   const [pageSize, setPageSize] = useState(4);
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
+    console.log(statusCode);
+    debugger
     if (statusCode == 200) {
-      message.success(responseMessage, 5);
+      message.success({
+        content: responseMessage,
+        style: {
+          marginLeft: 600,
+          width: 300
+        }
+      });
     }
+
     else if (statusCode == 404) {
       message.error("Error, URL Not Found");
     }
     else if (statusCode == 400) {
-      message.error(responseMessage, 5);
+      message.error(responseMessage);
+    }
+    else if (statusCode == 500) {
+      message.error("Internal Server Error");
     }
     else {
       message.error(responseMessage);
@@ -171,7 +183,9 @@ function ClientRead() {
       url: 'https://timesheetjy.azurewebsites.net/api/Admin/Edit_Client',
       data: e,
     }).then((r) => {
-      setMessage(r.request.status, e.client_Name + " Updated Successfully");
+      // setMessage(r.request.status, e.client_Name + " Updated Successfully");
+      setMessage(r.request.status, e.client_Name + " - " + "Updated Successfully");
+
       axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAll_Clients", {
         headers: {
           'Authorization': `Bearer ${toke}`
@@ -215,6 +229,8 @@ function ClientRead() {
   };
 
   const handleConfirmOk = () => {
+    var activateDesignation = '';
+
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -231,13 +247,19 @@ function ClientRead() {
           is_Active: false
         },
       }).then((r) => {
-        setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
+        // setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
         const timeoutmsg = setTimeout(() => {
           window.location.reload();
         }, 1500);
         return () => clearTimeout(timeoutmsg);
       })
+      activateDesignation = activateDesignation+element.client_Name+', ';
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
 

@@ -105,7 +105,9 @@ function Readdeactivated() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
-    setIsConfirmModalVisible(false);
+   
+    var activateDesignation = '';
+
     selectedRows.forEach(element => {
       axios({
         method: 'put',
@@ -121,7 +123,7 @@ function Readdeactivated() {
           is_Active: true
         },     
       }).then((r) => {
-        setMessage(r.request.status, element.designation_Name + " - Activated Successfully");
+        //setMessage(r.request.status, element.designation_Name + " - Activated Successfully");
 
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetDesignationIs_Active", {
           headers: {
@@ -130,8 +132,19 @@ function Readdeactivated() {
         })
           .then(data => setFilteredClient(data.data))
         //return () => clearTimeout(timeout);
-      })
+      });
+      console.log(element.designation_Name)
+      debugger
+      activateDesignation = activateDesignation+element.designation_Name+', '; 
+      debugger
+
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Activated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
+
   }
 
   useEffect(() => {

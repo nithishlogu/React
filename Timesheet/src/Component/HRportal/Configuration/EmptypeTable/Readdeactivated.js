@@ -102,6 +102,7 @@ function Readdeactivated() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -118,7 +119,7 @@ function Readdeactivated() {
           is_Active: true
         },     
       }).then((r) => {
-        setMessage(r.request.status, element.employee_Type_Name + " - Activated Successfully");
+        // setMessage(r.request.status, element.employee_Type_Name + " - Activated Successfully");
 
         // const timeout = setTimeout(() => {
         //   //console.log('hii after 2 seconds');
@@ -133,7 +134,16 @@ function Readdeactivated() {
           .then(data => setFilteredClient(data.data));
         //return () => clearTimeout(timeout);
       })
+      console.log(element.employee_Type_Name)
+    debugger
+    activateDesignation = activateDesignation+element.employee_Type_Name+', '; 
+    debugger
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Activated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {

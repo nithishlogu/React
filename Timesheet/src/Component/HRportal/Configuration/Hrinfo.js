@@ -28,14 +28,26 @@ const Hrinfo = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
   const setMessage = (statusCode, responseMessage) => {
+    console.log(statusCode);
+    debugger
     if (statusCode == 200) {
-      message.success(responseMessage, 4);
+      message.success({
+        content: responseMessage,
+        style: {
+          marginLeft: 600,
+          width: 300
+        }
+      });
     }
-    else if (statusCode == 400) {
-      message.error(responseMessage, 5);
-    }
+
     else if (statusCode == 404) {
       message.error("Error, URL Not Found");
+    }
+    else if (statusCode == 400) {
+      message.error(responseMessage);
+    }
+    else if (statusCode == 500) {
+      message.error("Internal Server Error");
     }
     else {
       message.error(responseMessage);
@@ -192,7 +204,7 @@ const Hrinfo = () => {
         .then(data => setFilteredClient(data.data))
         const timeout1 = setTimeout(() => {
           window.location.reload();
-        }, 10);
+        }, 100);
         return () => clearTimeout(timeout1);
     }).catch((error) => {
       setMessage(error.request.status, error.response.data);
@@ -330,6 +342,7 @@ const Hrinfo = () => {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -346,7 +359,7 @@ const Hrinfo = () => {
           is_Active: false
         },     
       }).then((r) => {
-        setMessage(r.request.status, element.hr_Name + "Deactivated Successfully");
+        // setMessage(r.request.status, element.hr_Name + "Deactivated Successfully");
         const timeoutmsg = setTimeout(() => {
           window.location.reload();
         }, 1500);
@@ -360,8 +373,13 @@ const Hrinfo = () => {
 
         return () => clearTimeout(timeoutmsg);
       })
+      activateDesignation = activateDesignation+element.hr_Name+', '; 
     });
-
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
 
@@ -488,9 +506,27 @@ const Hrinfo = () => {
                     console.log('validate Field:', info);
                   });
               }}
-                width={400}
-                onCancel={buttonCancel}
-                visible={isModalVisible}
+              width={400}
+                            onCancel={buttonCancel}
+                            visible={isModalVisible}
+                            footer={[
+                              <Button
+                                type="danger"
+                                onClick={buttonCancel}
+                              >Cancel</Button>,
+                              <Button
+                                type="primary"
+                                onClick={() => {
+                                  form.validateFields().then((values) => {
+                                    buttonOk(values)
+                                    form.resetFields();
+                                  })
+                                    .catch((info) => {
+                                      console.log('validate Field:', info);
+                                    });
+                                }}
+                              >ok</Button>
+                                ]}
               >
                 <AddClient />
               </Modal>

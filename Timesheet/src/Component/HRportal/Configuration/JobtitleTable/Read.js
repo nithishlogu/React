@@ -221,6 +221,7 @@ function ReadJob() {
         debugger
       })
     }
+    
 
     return (
       <>
@@ -289,7 +290,9 @@ function ReadJob() {
   };
 
   const handleConfirmOk = () => {
-    setIsConfirmModalVisible(false);
+    //setIsConfirmModalVisible(false);
+    var activateDesignation = '';
+
     selectedRows.forEach(element => {
       axios({
         method: 'put',
@@ -306,22 +309,27 @@ function ReadJob() {
         },     
       }).then((r) => {
         // debugger
-        setMessage(r.request.status, element.designation_Name + "- Deactivated Successfully");
+        //setMessage(r.request.status, element.designation_Name + "- Deactivated Successfully");
         // debugger
-        const timeout1 = setTimeout(() => {
-          //console.log('hii after 2 seconds');
-          window.location.reload();
-        }, 1500);
-        // debugger
-
+                
         //window.location.reload();
         $('#jobisactive').hide();
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAllDesignation")
           .then(data => setFilteredClient(data.data));
-        return () => clearTimeout(timeout1);
       })
+      activateDesignation = activateDesignation+element.designation_Name+', '; 
     });
     //window.location.reload();
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
+
+    const timeout1 = setTimeout(() => {
+      window.location.reload();
+    }, 1500);  
+    return () => clearTimeout(timeout1);
   }
 
   useEffect(() => {
@@ -439,9 +447,27 @@ function ReadJob() {
                   console.log('validate Field:', info);
                 });
             }}
-              width={400}
-              onCancel={buttonCancel}
-              visible={isModalVisible}
+            width={400}
+                          onCancel={buttonCancel}
+                          visible={isModalVisible}
+                          footer={[
+                            <Button
+                              type="danger"
+                              onClick={buttonCancel}
+                            >Cancel</Button>,
+                            <Button
+                              type="primary"
+                              onClick={() => {
+                                form.validateFields().then((values) => {
+                                  buttonOk(values)
+                                  form.resetFields();
+                                })
+                                  .catch((info) => {
+                                    console.log('validate Field:', info);
+                                  });
+                              }}
+                            >ok</Button>
+                              ]}
             >
               <AddClient />
             </Modal>

@@ -330,12 +330,12 @@ function ReadProject() {
         {
             title: "Start Date",
             dataIndex: 'start_Date',
-            // render: (start_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(start_Date).format('DD - MM - YYYY')}</p>) },
+             render: (start_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(start_Date).format('DD - MM - YYYY')}</p>) },
         },
         {
             title: "End Date",
             dataIndex: 'end_Date',
-            // render: (end_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(end_Date).format('DD - MM - YYYY')}</p>) },
+             render: (end_Date) => { return (<p style={{ paddingTop: '5%' }}>{moment(end_Date).format('DD - MM - YYYY')}</p>) },
         },
         {
             title: "Action",
@@ -611,9 +611,7 @@ function ReadProject() {
                                         setPageSize(pageSize)
                                     }
                                 }}
-                                scroll={{
-                                    y: 300
-                                }}
+                              
                             />
                             :
                             <Table
@@ -634,9 +632,7 @@ function ReadProject() {
                                         setPageSize1(pageSize1)
                                     }
                                 }}
-                                scroll={{
-                                    y: 250
-                                }}
+                               
                             />
                         }
                         {

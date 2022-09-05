@@ -38,6 +38,7 @@ function Readdeactivated() {
     clientdtl();
   }, []);
 
+  
   const clientDtlColumns = [
     {
       title: 'COL_ID',
@@ -83,6 +84,7 @@ function Readdeactivated() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -99,7 +101,7 @@ function Readdeactivated() {
           is_Active: true
         },     
       }).then((r) => {
-        setMessage(r.request.status, element.client_Name + " Activated Successfully");
+        // setMessage(r.request.status, element.client_Name + " Activated Successfully");
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetClientIs_Active", {
           headers: {
             'Authorization': `Bearer ${toke}`
@@ -107,8 +109,19 @@ function Readdeactivated() {
         })
           .then(data => setFilteredClient(data.data))
         $('#cliactbtn').hide();
-      })
+      });
+      console.log(element.client_Name)
+    debugger
+    activateDesignation = activateDesignation+element.client_Name+', '; 
+    debugger
     });
+    
+
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Activated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {

@@ -286,6 +286,7 @@ function ReadEmpType() {
   };
 
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -302,7 +303,7 @@ function ReadEmpType() {
           is_Active: false
         },     
       }).then((r) => {
-        setMessage(r.request.status, element.employee_Type_Name + " - Deactivated Successfully");
+        // setMessage(r.request.status, element.employee_Type_Name + " - Deactivated Successfully");
         const timeout = setTimeout(() => {
           //console.log('hii after 2 seconds');
           window.location.reload();
@@ -316,7 +317,13 @@ function ReadEmpType() {
           .then(data => setFilteredClient(data.data));
         return () => clearTimeout(timeout);
       })
+      activateDesignation = activateDesignation+element.employee_Type_Name+', '; 
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {
@@ -438,9 +445,27 @@ function ReadEmpType() {
                   console.log('validate Field:', info);
                 });
             }}
-              width={400}
-              onCancel={buttonCancel}
-              visible={isModalVisible}
+            width={400}
+                          onCancel={buttonCancel}
+                          visible={isModalVisible}
+                          footer={[
+                            <Button
+                              type="danger"
+                              onClick={buttonCancel}
+                            >Cancel</Button>,
+                            <Button
+                              type="primary"
+                              onClick={() => {
+                                form.validateFields().then((values) => {
+                                  buttonOk(values)
+                                  form.resetFields();
+                                })
+                                  .catch((info) => {
+                                    console.log('validate Field:', info);
+                                  });
+                              }}
+                            >ok</Button>
+                              ]}
             >
               <AddClient />
             </Modal>

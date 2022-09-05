@@ -114,7 +114,7 @@ const Tablee = () => {
   const [fullName, setfullName] = useState('');
 
   const onEdit = (row) => {
-    seteditEmployee_Type_Id(row.employee_Type_Id);
+    seteditEmployee_Type_Id(employee_Type_Id);
     setEditDesignation(row.designation_Id);
     setEditEmployee_Id(row.employee_Id);
     setEditEmployeeFst_Name(row.first_Name);
@@ -131,10 +131,10 @@ const Tablee = () => {
         employee_Id: row.employee_Id,
         first_Name: row.first_Name,
         last_Name: row.last_Name,
-        employee_Type_Id: row.employee_Type_Name,
+        employee_Type_Id: row.employee_Type_Id,
         joining_Date: row.joining_Date,
         end_Date: row.end_Date,
-        designation_Id: row.designation_Name,
+        designation_Id: row.designation_Id,
         employee_code: row.employee_code,
         alternate_Email: row.alternate_Email,
         reporting_Manager1: row.reporting_Manager1,
@@ -151,8 +151,6 @@ const Tablee = () => {
 
   const handleEdit = async (e) => {
 
-    debugger
-
     await axios({
       method: 'put',
       headers: {
@@ -167,8 +165,8 @@ const Tablee = () => {
         first_Name: e.first_Name,
         last_Name: e.last_Name,
         reporting_Manager1: e.reporting_Manager1,
-        employee_Type_Id: editEmployee_Type_Id,
-        designation_Id: editDesignation,
+        employee_Type_Id: e.employee_Type_Id,
+        designation_Id: e.designation_Id,
         employee_code:e.employee_code,
         email: e.email,
         contact_No: e.contact_No,
@@ -185,10 +183,10 @@ const Tablee = () => {
       })
         .then(data => setFilteredEmployee(data.data))
       setIsEditing(!isEditing);
-      const timeout1 = setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-      return () => clearTimeout(timeout1);
+      // const timeout1 = setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
+      // return () => clearTimeout(timeout1);
     }).catch((error) => {
       setMessage(error.request.status, error.response.data);
     })
@@ -799,7 +797,8 @@ const Tablee = () => {
                 size="small"
                 bordered
                 scroll={{
-                  x: 1400
+                  x: 1390,
+                  y:370
                 }}
               />
             </div>
@@ -882,7 +881,7 @@ const Tablee = () => {
                   </Col> <Col span={1}></Col>
                   <Col span={5}>
                     <Form.Item
-                      name='employee_Type_Id'
+                      name='employee_Type_Id' 
                     >
                       <Select>
                         {typeDropdown.map(opt => (
@@ -925,12 +924,15 @@ const Tablee = () => {
                     <Form.Item
                       name='end_Date'
                     >
-                      <Input type="datetime-local"
-                        disabledDate={(current) => {
-                          let customDate = joining_Date;
-                          return current && current > moment(customDate, "YYYY-MM-DD");
-                        }
-                        }
+                      <Input type='datetime-local'
+                            time='disabled'
+                            disabledDate={disabledEndDate}
+                            
+                            format="YYYY-MM-DD"
+                            value={endValue}
+                          
+                            onChange={handleEndDate}
+                            onOpenChange={handleEndOpenChange}
                       />
 
                     </Form.Item>
@@ -956,13 +958,14 @@ const Tablee = () => {
                 </Row>
                 <Row>
                   <Col span={5}>
-                    <p style={{ marginLeft: 10, fontWeight: "bold" }}>Reporting Manager</p>
+                    <p style={{ marginLeft: 10, fontWeight: "bold" }}>Employee Code<span style={{ color: "red" }}>*</span></p>
                   </Col>
                 </Row>
                 <Row>
                   <Col span={5}>
                   <Form.Item
                       name='employee_code'
+                      rules={[{ required: true, message: 'Please enter the Employee Code' }]}
                     >
                       <Input />
                     </Form.Item>

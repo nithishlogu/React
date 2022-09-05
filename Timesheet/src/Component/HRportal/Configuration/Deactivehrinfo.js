@@ -95,6 +95,7 @@ function Deactivatehrinfo() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -109,9 +110,9 @@ function Deactivatehrinfo() {
         data: {
           id: element.hr_Contact_Id,
           is_Active: true
-        },     
+        },      
       }).then((r) => {
-        setMessage(r.request.status, element.hr_Name + "Activated Successfully");
+        // setMessage(r.request.status, element.hr_Name + "Activated Successfully");
         $("#hractbtn").hide();
         const timeout = setTimeout(() => {
           window.location.reload();
@@ -126,7 +127,16 @@ function Deactivatehrinfo() {
         return () => clearTimeout(timeout);
 
       })
+      console.log(element.hr_Name)
+      debugger
+      activateDesignation = activateDesignation+element.designation_Name+', '; 
+      debugger
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Activated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {
