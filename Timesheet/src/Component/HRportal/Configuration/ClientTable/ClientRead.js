@@ -228,8 +228,8 @@ function ClientRead() {
         url: 'https://timesheetjy.azurewebsites.net/api/Admin/EditClientIsActive',
         data: {
           id: element.client_Id,
-        is_Active: false
-        },     
+          is_Active: false
+        },
       }).then((r) => {
         setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
         const timeoutmsg = setTimeout(() => {
@@ -365,6 +365,24 @@ function ClientRead() {
               width={400}
               onCancel={buttonCancel}
               visible={isModalVisible}
+              footer={[
+                <Button
+                  type="danger"
+                  onClick={buttonCancel}
+                >Cancel</Button>,
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.validateFields().then((values) => {
+                      buttonOk(values)
+                      form.resetFields();
+                    })
+                      .catch((info) => {
+                        console.log('validate Field:', info);
+                      });
+                  }}
+                >ok</Button>
+              ]}
             >
               <AddClient />
             </Modal>
