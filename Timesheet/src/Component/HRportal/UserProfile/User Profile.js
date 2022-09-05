@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Space, Button, Layout } from "antd";
 import axios from "axios";
+import ReactDOM from "react-dom";
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Link, useSearchParams } from 'react-router-dom';
 
 const Userprofile = () => {
@@ -9,6 +11,10 @@ const Userprofile = () => {
   const toke = sessionStorage.getItem("token");
   const mail = sessionStorage.getItem("mailId");
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+  const navig = () => {
+      navigate("/#");
+     }
 
   useEffect(() => {
     debugger;
@@ -80,6 +86,9 @@ const Userprofile = () => {
                           <tr>
                             <b>{user.mobile_No}</b>
                           </tr><br />
+                          <button  style={{backgroundColor:"red",color:"white"}} onClick={navig}>
+logout
+                          </button>
                         </div>
                       </>
                     ))}
