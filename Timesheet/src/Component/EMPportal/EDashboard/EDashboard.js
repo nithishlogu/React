@@ -1,13 +1,15 @@
 import React from "react";
 import axios from "axios";
-import { Layout, Card, Button, Input, Space, Select, Divider } from 'antd';
+import { Layout, Card, Button, Input, Space, Select, Divider, Empty } from 'antd';
 import { useState, useEffect, element } from 'react';
 import { CheckOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './Edashboard.css';
 import Sidersbar from "../ESidebar";
+import { DashModel } from "../../../model";
+
 
 const EDashboard = () => {
-    const [sts, setsts] = useState([]);
+    const [sts, setsts] = useState(DashModel);
     const toke = sessionStorage.getItem("token");
     const id = sessionStorage.getItem("id");
     const { Sider } = Layout;
@@ -18,17 +20,16 @@ const EDashboard = () => {
                 'Authorization': `Bearer ${toke}`
             }
         })
-        setsts(res.data);
+        setsts(res.data[0]);
     };
     useEffect(() => {
         clientdtl();
     }, []);
 
     const data = sts;
-debugger;
-console.log(data);
-debugger;
-    if (data.status === "Approved") {
+    debugger;
+    if(sts != undefined){
+    if (sts.status == "Approved") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -51,7 +52,7 @@ debugger;
             </div>
         )
     }
-    else if (data.status === "Rejected") {
+    else if (data.status == "Rejected") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -74,7 +75,7 @@ debugger;
             </div>
         )
     }
-    else if (data.status === "Pending") {
+    else if (data.status == "Pending") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -102,19 +103,17 @@ debugger;
             </div>
         )
     }
-    else {
+}
+    else if(sts == undefined)  {
         return (
-            <div>
-                <Sider style={{ height: "200%", width: 200 }}>
+                <div>
+                    <Sider style={{ height: "200%", width: 200 }}>
                     <Sidersbar />
                 </Sider>
                 <div style={{ marginTop: 160 }}>
-                    <h1 id="xy" style={{ color: 'lightskyblue', marginLeft: -65 }}><center>Timesheet {data.month} {data.year} status</center></h1>
+                    <h1 id="xy" style={{ color: 'lightskyblue', marginLeft: -65 }}><center>Timesheet {Date.UTC.month} {Date.UTC.year} status</center></h1>
                 </div>
                 <br /><br /><br />
-                <div>
-                    <CheckOutlined style={{ marginTop: -90, marginLeft: 588, fontSize: 90, color: "skyblue", position: "fixed" }} />
-                </div>
                 <div style={{ marginLeft: 350 }}>
                     <Space direction="horizontal">
                         <Input value="Approved" readOnly />
@@ -122,7 +121,7 @@ debugger;
                         <Input value="Rejected" readOnly />
                     </Space>
                 </div>
-            </div>
+                </div>
         )
     }
 };
