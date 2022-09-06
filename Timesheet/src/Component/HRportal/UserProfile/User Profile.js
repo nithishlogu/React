@@ -12,7 +12,7 @@ const Userprofile = () => {
   const mail = sessionStorage.getItem("mailId");
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-  const navig = () => {
+  const navig = () => { 
       navigate("/#");
      }
 

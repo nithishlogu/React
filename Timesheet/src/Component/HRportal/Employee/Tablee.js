@@ -191,6 +191,7 @@ const Tablee = () => {
       setMessage(error.request.status, error.response.data);
     })
   }
+  
 
   // Edit Off
   //FILTER ON 
@@ -345,8 +346,9 @@ const Tablee = () => {
   const [end_Date, setEnd_Date] = useState('');
   const [alternate_Email, setAlternate_Email] = useState('');
   const [employee_code, setemployee_code] = useState('');
+  const [password,setpassword] = useState('');
   const setDefault = () => {
-    setEmployeeId(''); setEmployeeFstName(''); setemployee_code(''); setEmployeeLstName(''); setreporting_Manager1(''); setemployee_Type_Id(''); setemail(''); setdesignation_Id(''); setAlternate_Email(''); setcontact_No(''); setStartValue(''); setEndValue('');
+    setEmployeeId(''); setEmployeeFstName(''); setemployee_code(''); setpassword(''); setEmployeeLstName(''); setreporting_Manager1(''); setemployee_Type_Id(''); setemail(''); setdesignation_Id(''); setAlternate_Email(''); setcontact_No(''); setStartValue(''); setEndValue('');
   }
 
   const addEmp = async () => {
@@ -370,7 +372,7 @@ const Tablee = () => {
         employee_Type_Id: change,
         reportinng_Manager2: "---",
         email,
-        role_Id: 1,
+        password:'Joyitemp@123',
         designation_Id: change1,
         contact_No,
         joining_Date,
@@ -435,6 +437,7 @@ const Tablee = () => {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
 
@@ -452,7 +455,7 @@ const Tablee = () => {
           is_Active: false
         }
       }).then((r) => {
-        setMessage(r.request.status, element.first_Name + " " + element.last_Name + " - Deactivated Successfully");
+        // setMessage(r.request.status, element.first_Name + " " + element.last_Name + " - Deactivated Successfully");
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAllEmployee", {
           headers: {
             'Authorization': `Bearer ${toke}`
@@ -466,7 +469,15 @@ const Tablee = () => {
       }).catch((error) => {
         setMessage(error.request.status);
       })
+      console.log(element.designation_Name)
+      debugger
+      activateDesignation = activateDesignation+element.first_Name+element.last_Name+', ';
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {
@@ -710,6 +721,22 @@ const Tablee = () => {
                           </Form.Item>
                         </Col>
                       </Row>
+                      {/* <Row>
+                      <Col span={5}>
+                          <p style={{ fontWeight: "bold", marginLeft: 10 }}>pass<span style={{ color: "red" }}>*</span></p>
+                        </Col>
+                        <Col span={1}></Col>
+                      </Row>
+                      <Row>
+                      <Col span={5}>
+                        <Form.Item name="password"
+                          rules={[{ required: true, message: 'Please enter the Employee Code' }]}
+                          >
+                            <Input id='password' value={password}
+                              onChange={(e) => setpassword(e.target.value)} />
+                          </Form.Item>
+                        </Col>
+                      </Row> */}
 
                       <h2 className="edt" style={{ marginTop: 20, fontWeight: "bold", color: "blue" }}>CONTACT INFO</h2>
                       <Row>
