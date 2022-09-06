@@ -177,6 +177,7 @@ function Deactivateemp() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -200,12 +201,21 @@ function Deactivateemp() {
         })
           .then(data => setFilteredEmployee(data.data))
         debugger;
-        setMessage(r.request.status, element.first_Name + element.last_Name + " Employee Activated Successfully");
+        // setMessage(r.request.status, element.first_Name + element.last_Name + " Employee Activated Successfully");
         $("#act").hide();
       }).catch((error) => {
         setMessage(error.request.status);
       })
+      console.log(element.designation_Name)
+      debugger
+      activateDesignation = activateDesignation+element.first_Name+element.last_Name+', '; 
+      debugger
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Activated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {

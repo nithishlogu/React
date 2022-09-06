@@ -18,7 +18,7 @@ const EDashboard = () => {
                 'Authorization': `Bearer ${toke}`
             }
         })
-        setsts(res.data[0]);
+        setsts(res.data);
     };
     useEffect(() => {
         clientdtl();
@@ -26,7 +26,9 @@ const EDashboard = () => {
 
     const data = sts;
 debugger;
-    if (data.status == "Approved") {
+console.log(data);
+debugger;
+    if (data.status === "Approved") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -49,7 +51,7 @@ debugger;
             </div>
         )
     }
-    else if (data.status == "Rejected") {
+    else if (data.status === "Rejected") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>
@@ -72,7 +74,7 @@ debugger;
             </div>
         )
     }
-    else if (data.status == "Pending") {
+    else if (data.status === "Pending") {
         return (
             <div>
                 <Sider style={{ height: "200%", width: 200 }}>

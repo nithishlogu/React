@@ -7,11 +7,11 @@ import Sidersbar from "../ESidebar";
 const EUserprofile = () => {
     const { Sider } = Layout;
     const [users, setUsers] = useState([]);
-    const emails = sessionStorage.getItem("mailId");
+    const mail = sessionStorage.getItem("mailId");
     const toke = sessionStorage.getItem("token");
 
     useEffect(() => {
-        axios(`https://timesheetjy.azurewebsites.net/api/Employee/GetUserProfile?mail_id=${emails}`, {
+        axios(`https://timesheetjy.azurewebsites.net/api/Employee/GetUserProfile?mail_id=${mail}`, {
             headers: {
                 'Authorization': `Bearer ${toke}`
             }

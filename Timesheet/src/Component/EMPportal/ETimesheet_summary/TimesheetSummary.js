@@ -13,7 +13,7 @@ function TimesheetSummary() {
   const { Sider } = Layout;
   const [selected, setSelected] = useState('');
   const [dataSource, setdataSource] = useState([]);
-  // useEffect(() => {axios("https://timesheetjy.azurewebsites.net/api/Employee/TimeSheet_Summary?id=1").then((data) => setdataSource(data.data))}, []);
+   useEffect(() => {axios("https://timesheetjy.azurewebsites.net/api/Employee/GetAllTimeSheet_Summary?Employee_Id=1&year=2022").then((data) => setdataSource(data.data))}, []);
 
   const columns = [
     {
@@ -70,7 +70,7 @@ function TimesheetSummary() {
         <Sidersbar />
       </Sider>
       <div className="App">
-        <h1 style={{ color: 'Blue' }}>JAN-2022 TIMESHEET  SUMMARY</h1>
+        <h1 style={{ color: 'Blue' }}> TIMESHEET  SUMMARY</h1>
         <header className="App-header">
           {/* <button onClick={onAdd}>add</button> */}
 
