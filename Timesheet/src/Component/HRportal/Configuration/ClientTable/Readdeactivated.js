@@ -48,7 +48,7 @@ function Readdeactivated() {
     {
       title: 'Client',
       dataIndex: 'client_Name',
-      width: "30rem"
+      width: "20rem"
     },
   ];
 
@@ -148,8 +148,9 @@ function Readdeactivated() {
             >
               Activate
             </Button></div></Space>
-        <div style={{ marginTop: 15 }}>
+        <div style={{ marginTop: 15, width:"150%" }}>
           <Table
+            style={{width:"200%"}}
             columns={clientDtlColumns}
             dataSource={filteredClient}
             rowKey={record => record.client_Id}
@@ -168,6 +169,7 @@ function Readdeactivated() {
             size="small"
             bordered
             scroll={{
+              x:0,
               y:200
             }}
           />
