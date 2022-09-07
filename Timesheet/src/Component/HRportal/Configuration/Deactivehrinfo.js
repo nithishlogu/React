@@ -74,8 +74,11 @@ function Deactivatehrinfo() {
       if (selectedRow.length === 0) {
 
       }
+      $('#hractbtn').show();
     }
+
   };
+
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
@@ -114,9 +117,7 @@ function Deactivatehrinfo() {
       }).then((r) => {
         // setMessage(r.request.status, element.hr_Name + "Activated Successfully");
         $("#hractbtn").hide();
-        const timeout = setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+     
 
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetHrContactInfoeIs_Active", {
           headers: {
@@ -124,7 +125,7 @@ function Deactivatehrinfo() {
           }
         })
           .then(data => setFilteredClient(data.data))
-        return () => clearTimeout(timeout);
+        
 
       })
       console.log(element.hr_Name)

@@ -411,14 +411,14 @@ function ReadProject() {
         });
         deactivateProjectName = deactivateProjectName.substring(0, deactivateProjectName.length - 2);
         setMessage(200, deactivateProjectName + ' Deactivated Successfully')
-        const timeset = setTimeout(() => {
-            window.location.reload();
-        }, 3500);
+        // const timeset = setTimeout(() => {
+        //     window.location.reload();
+        // }, 3500);
         setDeactivate(false);
         setSelectedRows([]);
         setSelectedRowKeys([]);
         setToggleActivate(false);
-        return () => clearTimeout(timeset);
+        return () => clearTimeout();
     };
 
     const handleActivateOk = () => {

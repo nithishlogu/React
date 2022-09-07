@@ -3,6 +3,7 @@ import axios from "axios";
 import { Input, Button, Row, Col, Modal, Table, message, Space } from "antd";
 import { Checkbox } from 'semantic-ui-react';
 import { CheckCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import $ from 'jquery';
 
 function Readdeactivated() {
 
@@ -81,7 +82,9 @@ function Readdeactivated() {
       if (selectedRow.length === 0) {
 
       }
+      $('#cliactbtn').show();
     }
+
   };
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
@@ -129,9 +132,10 @@ function Readdeactivated() {
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetEmployeetypeIs_Active", {
           headers: {
             'Authorization': `Bearer ${toke}`
-          }
+          } 
         })
           .then(data => setFilteredClient(data.data));
+          $('#cliactbtn').hide();
         //return () => clearTimeout(timeout);
       })
       console.log(element.employee_Type_Name)
@@ -167,7 +171,7 @@ function Readdeactivated() {
               value={search}
               style={{ width: 150 }}
               onChange={(e) => setSearch(e.target.value)} /></div>
-          <div style={{ marginLeft: 270, marginTop: -9, position: "fixed" }}>
+          <div id="cliactbtn" style={{ marginLeft: 270, marginTop: -9, position: "fixed" }}>
             <Button
               hidden={!hasSelected}
               type="primary"

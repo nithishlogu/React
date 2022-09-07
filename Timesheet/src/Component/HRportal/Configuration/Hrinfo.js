@@ -28,26 +28,14 @@ const Hrinfo = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
   const setMessage = (statusCode, responseMessage) => {
-    console.log(statusCode);
-    debugger
     if (statusCode == 200) {
-      message.success({
-        content: responseMessage,
-        style: {
-          marginLeft: 600,
-          width: 300
-        }
-      });
-    }
-
-    else if (statusCode == 404) {
-      message.error("Error, URL Not Found");
+      message.success(responseMessage, 4);
     }
     else if (statusCode == 400) {
-      message.error(responseMessage);
+      message.error(responseMessage, 5);
     }
-    else if (statusCode == 500) {
-      message.error("Internal Server Error");
+    else if (statusCode == 404) {
+      message.error("Error, URL Not Found");
     }
     else {
       message.error(responseMessage);
@@ -195,22 +183,17 @@ const Hrinfo = () => {
       data: addedClient
     }).then((r) => {
       console.log(r);
-      setMessage(r.request.status, addedClient.hr_Mail_Id + " Added Successfully");
+     // setMessage(r.request.status, addedClient.hr_Mail_Id + " Added Successfully");
       axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAll_HrContactinfo", {
         headers: {
-          'Authorization': `Bearer ${toke}`
+          'Authorization': `Bearer ${toke}` 
         }
       })
         .then(data => setFilteredClient(data.data))
-        const timeout1 = setTimeout(() => {
-          window.location.reload();
-        }, 100);
-        return () => clearTimeout(timeout1);
     }).catch((error) => {
       setMessage(error.request.status, error.response.data);
     })
   }
-  
 
   const onEdit = (record) => {
     setIsEditing(true);
@@ -359,7 +342,7 @@ const Hrinfo = () => {
           is_Active: false
         },     
       }).then((r) => {
-        // setMessage(r.request.status, element.hr_Name + "Deactivated Successfully");
+        //setMessage(r.request.status, element.hr_Name + "Deactivated Successfully");
         const timeoutmsg = setTimeout(() => {
           window.location.reload();
         }, 1500);
@@ -506,27 +489,9 @@ const Hrinfo = () => {
                     console.log('validate Field:', info);
                   });
               }}
-              width={400}
-                            onCancel={buttonCancel}
-                            visible={isModalVisible}
-                            footer={[
-                              <Button
-                                type="danger"
-                                onClick={buttonCancel}
-                              >Cancel</Button>,
-                              <Button
-                                type="primary"
-                                onClick={() => {
-                                  form.validateFields().then((values) => {
-                                    buttonOk(values)
-                                    form.resetFields();
-                                  })
-                                    .catch((info) => {
-                                      console.log('validate Field:', info);
-                                    });
-                                }}
-                              >ok</Button>
-                                ]}
+                width={400}
+                onCancel={buttonCancel}
+                visible={isModalVisible}
               >
                 <AddClient />
               </Modal>

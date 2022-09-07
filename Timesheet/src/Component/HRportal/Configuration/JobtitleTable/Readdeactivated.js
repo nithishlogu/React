@@ -3,6 +3,8 @@ import axios from "axios";
 import { Input, Button, Row, Col, Modal, Table, message, Space } from "antd";
 import { Checkbox } from 'semantic-ui-react';
 import { CheckCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import $ from 'jquery';
+
 
 function Readdeactivated() {
 
@@ -84,8 +86,11 @@ function Readdeactivated() {
       if (selectedRow.length === 0) {
 
       }
+      $('#cliactbtn').show();
     }
+
   };
+
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
@@ -105,9 +110,8 @@ function Readdeactivated() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
-   
     var activateDesignation = '';
-
+    setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
         method: 'put',
@@ -123,7 +127,8 @@ function Readdeactivated() {
           is_Active: true
         },     
       }).then((r) => {
-        //setMessage(r.request.status, element.designation_Name + " - Activated Successfully");
+       
+        // setMessage(r.request.status, element.designation_Name + " - Activated Successfully");
 
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetDesignationIs_Active", {
           headers: {
@@ -131,20 +136,19 @@ function Readdeactivated() {
           }
         })
           .then(data => setFilteredClient(data.data))
-        //return () => clearTimeout(timeout);
-      });
-      console.log(element.designation_Name)
+          $('#cliactbtn').hide();
+        
+      })
+      console.log(element.hr_Name)
       debugger
       activateDesignation = activateDesignation+element.designation_Name+', '; 
       debugger
-
     });
     activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
     debugger
     setMessage(200, activateDesignation  + " Activated Successfully");
     debugger
     setIsConfirmModalVisible(false);
-
   }
 
   useEffect(() => {
@@ -165,9 +169,9 @@ function Readdeactivated() {
               suffix={<SearchOutlined />}
               className="w-25% form-control"
               value={search}
-              style={{ width: 150 }}
+              style={{ width: 150 }} 
               onChange={(e) => setSearch(e.target.value)} /></div>
-          <div id="empdtd" style={{ marginLeft: 270, marginTop: -9, position: "fixed" }}>
+          <div id="cliactbtn" style={{ marginLeft: 270, marginTop: -9, position: "fixed" }}>
             <Button
               hidden={!hasSelected}
               type="primary"
