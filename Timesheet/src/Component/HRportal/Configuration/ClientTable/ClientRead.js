@@ -22,29 +22,17 @@ function ClientRead() {
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(4);
+  const [pageSize, setPageSize] = useState(10);
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
-    console.log(statusCode);
-    debugger
     if (statusCode == 200) {
-      message.success({
-        content: responseMessage,
-        style: {
-          marginLeft: 600,
-          width: 300
-        }
-      });
+      message.success(responseMessage, 5);
     }
-
     else if (statusCode == 404) {
       message.error("Error, URL Not Found");
     }
     else if (statusCode == 400) {
-      message.error(responseMessage);
-    }
-    else if (statusCode == 500) {
-      message.error("Internal Server Error");
+      message.error(responseMessage, 5);
     }
     else {
       message.error(responseMessage);
@@ -67,7 +55,7 @@ function ClientRead() {
   const clientDtlColumns = [
     {
       title: 'COL_ID',
-      render: (value, item, index) => (page - 1) * 4 + index + 1,
+      render: (value, item, index) => (page - 1) * pageSize + index + 1,
       dataIndex: 'colid',
       width: "5rem"
     },
@@ -82,6 +70,7 @@ function ClientRead() {
       render: (clidtl) => {
         return <>
           <Button type="primary" icon={<EditOutlined />} title="Edit"
+          hidden={!hassSelect}
             onClick={() => {
               onEdit(clidtl);
             }} />
@@ -183,9 +172,7 @@ function ClientRead() {
       url: 'https://timesheetjy.azurewebsites.net/api/Admin/Edit_Client',
       data: e,
     }).then((r) => {
-      // setMessage(r.request.status, e.client_Name + " Updated Successfully");
-      setMessage(r.request.status, e.client_Name + " - " + "Updated Successfully");
-
+      setMessage(r.request.status, e.client_Name + " Updated Successfully");
       axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAll_Clients", {
         headers: {
           'Authorization': `Bearer ${toke}`
@@ -197,9 +184,9 @@ function ClientRead() {
       setMessage(error.request.status, error.response.data);
     });
   }
-
   const [selectedRows, setSelectedRows] = useState([]);
   const hasSelected = selectedRows.length > 0;
+  const hassSelect = selectedRows.length == 1;  
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
@@ -229,8 +216,6 @@ function ClientRead() {
   };
 
   const handleConfirmOk = () => {
-    var activateDesignation = '';
-
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -244,22 +229,16 @@ function ClientRead() {
         url: 'https://timesheetjy.azurewebsites.net/api/Admin/EditClientIsActive',
         data: {
           id: element.client_Id,
-          is_Active: false
-        },
+        is_Active: false
+        },     
       }).then((r) => {
-        // setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
+        setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
         const timeoutmsg = setTimeout(() => {
           window.location.reload();
         }, 1500);
         return () => clearTimeout(timeoutmsg);
       })
-      activateDesignation = activateDesignation+element.client_Name+', ';
     });
-    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
-    debugger
-    setMessage(200, activateDesignation  + " Deactivated Successfully");
-    debugger
-    setIsConfirmModalVisible(false);
   }
 
 
@@ -369,6 +348,9 @@ function ClientRead() {
                 }}
                 size="small"
                 bordered
+                scroll={{
+                  y:200
+                }}
               /></div>
             <Button id="efg"
               type="link" rowKey="id"
@@ -387,24 +369,6 @@ function ClientRead() {
               width={400}
               onCancel={buttonCancel}
               visible={isModalVisible}
-              footer={[
-                <Button
-                  type="danger"
-                  onClick={buttonCancel}
-                >Cancel</Button>,
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    form.validateFields().then((values) => {
-                      buttonOk(values)
-                      form.resetFields();
-                    })
-                      .catch((info) => {
-                        console.log('validate Field:', info);
-                      });
-                  }}
-                >ok</Button>
-              ]}
             >
               <AddClient />
             </Modal>
