@@ -14,7 +14,7 @@ function Readdeactivated() {
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
@@ -24,7 +24,7 @@ function Readdeactivated() {
       message.error("Error, URL Not Found");
     }
   }
-
+ 
   const clientdtl = async () => {
     const response = await axios("https://timesheetjy.azurewebsites.net/api/Admin/GetClientIs_Active", {
       headers: {
@@ -83,6 +83,7 @@ function Readdeactivated() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -99,7 +100,7 @@ function Readdeactivated() {
           is_Active: true
         },     
       }).then((r) => {
-        setMessage(r.request.status, element.client_Name + " Activated Successfully");
+        //setMessage(r.request.status, element.client_Name + " Activated Successfully");
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetClientIs_Active", {
           headers: {
             'Authorization': `Bearer ${toke}`
@@ -115,7 +116,13 @@ function Readdeactivated() {
         setPage(page - 1);
         }
       })
+      activateDesignation = activateDesignation+element.client_Name+', '; 
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Activated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {
@@ -167,9 +174,9 @@ function Readdeactivated() {
             }}
             size="small"
             bordered
-            scroll={{
-              y:200
-            }}
+            // scroll={{
+            //   y:200
+            // }}
           />
           <Modal
             visible={isConfirmModalVisible}

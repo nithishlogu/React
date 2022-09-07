@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Space, Button, Layout } from "antd";
+import { Row, Col, Card, Space, Button, Layout,Popover} from "antd";
 import axios from "axios";
-import ReactDOM from "react-dom";
-import { useLocation, useNavigate } from 'react-router-dom'
 import { Link, useSearchParams } from 'react-router-dom';
+import {LogoutOutlined} from '@ant-design/icons';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Userprofile = () => {
   const { Sider, Content } = Layout;
   const [searchparams] = useSearchParams();
   const toke = sessionStorage.getItem("token");
   const mail = sessionStorage.getItem("mailId");
-  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-  const navig = () => { 
+
+  const navig = () => {
+
       navigate("/#");
+
      }
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     debugger;
@@ -46,6 +49,12 @@ const Userprofile = () => {
       </Sider>
       <div style={{ width: 750, height: 600, marginLeft: 250, marginTop: 30, backgroundColor: "white" }}>
         <div style={{ marginLeft: 200, marginTop: 30 }}>
+        <Popover position="top" content='Logout'>
+
+<button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'140%',marginTop:'2%'}}>
+<LogoutOutlined  onClick={navig}   />
+</button>
+ </Popover>
           <h1>{users.map(user => (
             <h1 style={{ color: "blue", fontSize: 60, marginLeft: -50 }}>{user.name}</h1>
           ))}</h1>
@@ -86,9 +95,6 @@ const Userprofile = () => {
                           <tr>
                             <b>{user.mobile_No}</b>
                           </tr><br />
-                          <button  style={{backgroundColor:"red",color:"white"}} onClick={navig}>
-logout
-                          </button>
                         </div>
                       </>
                     ))}

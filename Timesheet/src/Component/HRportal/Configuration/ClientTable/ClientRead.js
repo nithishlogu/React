@@ -22,7 +22,7 @@ function ClientRead() {
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
@@ -216,6 +216,7 @@ function ClientRead() {
   };
 
   const handleConfirmOk = () => {
+    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -232,13 +233,19 @@ function ClientRead() {
         is_Active: false
         },     
       }).then((r) => {
-        setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
+        //setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
         const timeoutmsg = setTimeout(() => {
           window.location.reload();
         }, 1500);
         return () => clearTimeout(timeoutmsg);
       })
+      activateDesignation = activateDesignation+element.client_Name+', '; 
     });
+    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
+    debugger
+    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    debugger
+    setIsConfirmModalVisible(false);
   }
 
 
@@ -326,7 +333,7 @@ function ClientRead() {
                   onClick={showDeactivateModal}
                   icon={<CloseCircleOutlined />}
                 >
-                  Deactivate
+                  Deactivate 
                 </Button></div>
             </Space>
             <div id="clitable" style={{ marginTop: 30 }}>
@@ -348,9 +355,9 @@ function ClientRead() {
                 }}
                 size="small"
                 bordered
-                scroll={{
-                  y:200
-                }}
+                // scroll={{
+                //   y:200
+                // }}
               /></div>
             <Button id="efg"
               type="link" rowKey="id"

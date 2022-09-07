@@ -1,8 +1,10 @@
 import "antd/dist/antd.css";
 import React, { useState, useEffect } from "react";
-import { Table, Button, Layout } from 'antd';
+import { Table, Button, Layout,Popover } from 'antd';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import {LogoutOutlined} from '@ant-design/icons';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Tb1() {
@@ -18,6 +20,13 @@ function Tb1() {
     }).then(data => setdataSource(data.data))
   }, []);
   const [year, setyear] = useState("2018");
+  const navigate = useNavigate();
+
+  const navig = () => {
+
+      navigate("/#");
+
+     }
   const columns = [
     {
       title: 'COL_ID',
@@ -43,6 +52,11 @@ function Tb1() {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
+      <Popover position="top" content='Logout'>
+      <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+      <LogoutOutlined  onClick={navig}   />
+      </button>
+      </Popover>
       <div className="yertab">
         <h1 style={{ color: 'blue', fontSize: '40px', backgroundColor: "white", marginLeft: '400px', marginTop: '5%', position: "fixed" }}>TIMESHEET  STATUS</h1>
         <div>

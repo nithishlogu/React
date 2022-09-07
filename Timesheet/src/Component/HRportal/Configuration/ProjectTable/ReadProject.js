@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Select, Typography } from 'antd';
-import { PlusCircleOutlined, EditOutlined, CloseCircleOutlined, ClockCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, EditOutlined, CloseCircleOutlined,CheckCircleOutlined, ClockCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { Modal, Table, Input, Space, DatePicker, Form, message, Popover, Layout, Row, Col, Card } from 'antd';
 import { Button } from 'antd';
 import { Checkbox, Label } from 'semantic-ui-react';
@@ -581,6 +581,7 @@ function ReadProject() {
                                             toggleActivate ?
                                                 <Button
                                                     onClick={showActivateData}
+                                                    icon={<CheckCircleOutlined />}
                                                     style={{ color: 'white', fontWeight: 'bolder' }}
                                                     type="primary"
 

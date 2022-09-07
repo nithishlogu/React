@@ -479,7 +479,7 @@ const Hrinfo = () => {
                 type="link" rowKey="id"
                 icon={<PlusCircleOutlined />}
                 onClick={showAddData}
-                style={{ marginLeft: 300, fontWeight: 'bolder', fontSize: 20 }}>Add</Button>
+                style={{ marginLeft: 300, fontWeight: 'bolder', fontSize: 20 }}>ADD</Button>
               <Modal onOk={() => {
                 form.validateFields().then((values) => {
                   buttonOk(values)

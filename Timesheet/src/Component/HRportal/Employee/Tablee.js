@@ -1,5 +1,5 @@
 import "antd/dist/antd.css";
-import { Modal, Input, Space, Col, Row, Form, message, Table, Select, DatePicker, Card, Layout } from "antd";
+import { Modal, Input, Space, Col, Row, Form, message, Table, Select, DatePicker, Card, Layout,Popover } from "antd";
 import Button from "antd-button-color";
 import 'antd-button-color/dist/css/style.css';
 import { useEffect, useState } from "react";
@@ -10,10 +10,19 @@ import $, { data } from 'jquery';
 import Deactivateemp from "./DeactiveEmployee";
 import { Link } from 'react-router-dom';
 import { Checkbox } from 'semantic-ui-react';
+import {LogoutOutlined} from '@ant-design/icons';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Tablee = () => {
 
   const { Sider, Content } = Layout;
+  const navigate = useNavigate();
+
+  const navig = () => {
+
+      navigate("/#");
+
+     }
   const [empDataSource, setEmpDataSoure] = useState([]);
   const [addedEmploy, setAddedEmploy] = useState({ "employee_Name": "", "reporting_Manager1": "", "employee_Type_Id": "", "email": "", "designation_Id": "", "contact_No": "", "joining_Date": "" });
   const [isEditing, setIsEditing] = useState(false);
@@ -535,9 +544,16 @@ const Tablee = () => {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
+      <Popover position="top" content='Logout'>
+      <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+      <LogoutOutlined  onClick={navig}   />
+      </button>
+      </Popover>
+
       <div style={{ position: "fixed", marginLeft: 250 }}>
         <div className="App" style={{ display: "-ms-flexbox", marginBottom: 30, maxHeight: 500 }}>
           <h1 style={{ color: "blue", fontWeight: "bolder" }}>EMPLOYEES</h1>
+          
           <header className="App-header">
             <Space direction="Horizantal" style={{ marginTop: 10 }}>
               <div id="abc">

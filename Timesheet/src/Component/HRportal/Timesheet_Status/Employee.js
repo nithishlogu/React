@@ -1,6 +1,6 @@
 import "antd/dist/antd.css";
 import React, { useEffect } from 'react';
-import { Input, Table, Checkbox, Menu, Space, Tooltip, Tag, Button, message, Row, Popover, Layout } from "antd";
+import { Input, Table, Checkbox, Menu, Space, Tooltip, Tag, Button, message, Row, Popover, Layout,} from "antd";
 import { useState } from 'react';
 import { type } from "@testing-library/user-event/dist/type";
 import Search from "antd/lib/input/Search";
@@ -14,6 +14,8 @@ import Datatable from 'react-data-table-component'
 import Title from "antd/lib/skeleton/Title";
 import { data } from "jquery";
 import { fixControlledValue } from "antd/lib/input/Input";
+import {LogoutOutlined} from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 function Tb3() {
   function refreshPage() {
@@ -41,6 +43,13 @@ function Tb3() {
     { value: "Pending", label: "Pending", color: "blue" }
   ];
   const [selected, setSelected] = useState('');
+  const navigate = useNavigate();
+
+  const navig = () => {
+
+      navigate("/#");
+
+     }
   const [dataSource, setdataSource] = useState(new Array);
   const [filteredEmployee, setFilteredEmployee] = useState(new Array);
   const [fruit, setFruit] = useState();
@@ -301,6 +310,11 @@ function Tb3() {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
+      <Popover position="top" content='Logout'>
+      <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+      <LogoutOutlined  onClick={navig}   />
+      </button>
+      </Popover>
       <div className="App" style={{ marginLeft: 250, width: 1000 }}>
         <h1 style={{ color: 'Blue', margin: "5% 0% 0% 2%", fontSize: '200%' }}> {month[month_id].toUpperCase()} - {year} TIMESHEET  STATUS</h1>
         <header className="App-header"><br></br><br></br>
