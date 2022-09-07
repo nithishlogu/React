@@ -6,7 +6,7 @@ import { CheckCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import $ from 'jquery';
 
 function Readdeactivated() {
-
+ 
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
