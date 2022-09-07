@@ -14,7 +14,7 @@ function Readdeactivated() {
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(4);
+  const [pageSize, setPageSize] = useState(10);
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
@@ -38,11 +38,10 @@ function Readdeactivated() {
     clientdtl();
   }, []);
 
-  
   const clientDtlColumns = [
     {
       title: 'COL_ID',
-      render: (value, item, index) => (page - 1) * 4 + index + 1,
+      render: (value, item, index) => (page - 1) * pageSize + index + 1,
       dataIndex: 'colid',
       width: "7rem"
     },
@@ -84,7 +83,6 @@ function Readdeactivated() {
     setIsConfirmModalVisible(false);
   };
   const handleConfirmOk = () => {
-    var activateDesignation = '';
     setIsConfirmModalVisible(false);
     selectedRows.forEach(element => {
       axios({
@@ -101,7 +99,7 @@ function Readdeactivated() {
           is_Active: true
         },     
       }).then((r) => {
-        // setMessage(r.request.status, element.client_Name + " Activated Successfully");
+        setMessage(r.request.status, element.client_Name + " Activated Successfully");
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetClientIs_Active", {
           headers: {
             'Authorization': `Bearer ${toke}`
@@ -109,19 +107,15 @@ function Readdeactivated() {
         })
           .then(data => setFilteredClient(data.data))
         $('#cliactbtn').hide();
-      });
-      console.log(element.client_Name)
-    debugger
-    activateDesignation = activateDesignation+element.client_Name+', '; 
-    debugger
+        if(page == 1)
+        {
+          setPage(page);
+        }
+        else{          
+        setPage(page - 1);
+        }
+      })
     });
-    
-
-    activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
-    debugger
-    setMessage(200, activateDesignation  + " Activated Successfully");
-    debugger
-    setIsConfirmModalVisible(false);
   }
 
   useEffect(() => {
@@ -173,6 +167,9 @@ function Readdeactivated() {
             }}
             size="small"
             bordered
+            scroll={{
+              y:200
+            }}
           />
           <Modal
             visible={isConfirmModalVisible}
