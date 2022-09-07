@@ -22,7 +22,7 @@ function ClientRead() {
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
@@ -64,19 +64,15 @@ function ClientRead() {
       dataIndex: 'client_Name',
       width: "10rem"
     },
-    {
-      key: '11',
-      width: "2rem",
-      render: (clidtl) => {
-        return <>
-          <Button type="primary" icon={<EditOutlined />} title="Edit"
-          hidden={!hassSelect}
-            onClick={() => {
-              onEdit(clidtl);
-            }} />
-        </>
-      }
-    },
+    // {
+    //   key: '11',
+    //   width: "2rem",
+    //   render: (clidtl) => {
+    //     return <>
+          
+    //     </>
+    //   }
+    // },
   ];
 
   const showAddData = () => {
@@ -151,8 +147,8 @@ function ClientRead() {
   const [editForm] = Form.useForm();
   const onEdit = (row) => {
     editForm.setFieldsValue({
-      client_Id: row.client_Id,
-      client_Name: row.client_Name
+      client_Id: selectedRows[0].client_Id,
+      client_Name: selectedRows[0].client_Name
     });
     setIsEditing(!isEditing);
   }
@@ -334,7 +330,14 @@ function ClientRead() {
                   icon={<CloseCircleOutlined />}
                 >
                   Deactivate 
-                </Button></div>
+                </Button> </div>
+                <div style={{marginLeft: 20}}>
+                <Button type="primary" icon={<EditOutlined />} title="Edit"
+                  hidden={!hassSelect}
+                    onClick={() => {
+                      onEdit();
+                    }} >EDIT</Button>
+                </div>
             </Space>
             <div id="clitable" style={{ marginTop: 30 }}>
               <Table
@@ -355,9 +358,9 @@ function ClientRead() {
                 }}
                 size="small"
                 bordered
-                // scroll={{
-                //   y:200
-                // }}
+                scroll={{
+                  y:200
+                }}
               /></div>
             <Button id="efg"
               type="link" rowKey="id"
