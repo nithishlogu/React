@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Input, Space, Form, Modal, Col, Row, Table, message, Card, Layout ,Popover} from "antd";
+import { Input, Space, Form, Modal, Col, Row, Table, message, Card, Layout,Popover } from "antd";
 import Button from "antd-button-color";
 import { PlusCircleOutlined, EditOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import Readdeactivated from "./Readdeactivated";
@@ -10,11 +10,14 @@ import { Checkbox } from 'semantic-ui-react';
 import {LogoutOutlined} from '@ant-design/icons';
 import {  useNavigate } from 'react-router-dom';
 
-
 function ClientRead() {
 
   const { Sider, Content } = Layout;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [deactivate, setDeactivate] = useState(false);
+  const [isActivateModal, setIsActivateModal] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [toggleActivate, setToggleActivate] = useState(false);
   const [clientDataSource, setClientDataSoure] = useState([]);
   const [filteredClient, setFilteredClient] = useState([]);
   const [search, setSearch] = useState('');
@@ -25,18 +28,11 @@ function ClientRead() {
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
   const [page, setPage] = useState(1);
-  const navigate = useNavigate();
-
-  const navig = () => {
-
-      navigate("/#");
-
-     }
- 
- 
-
   const [pageSize, setPageSize] = useState(10);
- 
+  const navigate = useNavigate();
+  const navig = () => {
+       navigate("/#");
+       }
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
@@ -78,15 +74,7 @@ function ClientRead() {
       dataIndex: 'client_Name',
       width: "10rem"
     },
-    // {
-    //   key: '11',
-    //   width: "2rem",
-    //   render: (clidtl) => {
-    //     return <>
-          
-    //     </>
-    //   }
-    // },
+    
   ];
 
   const showAddData = () => {
@@ -196,19 +184,27 @@ function ClientRead() {
   }
   const [selectedRows, setSelectedRows] = useState([]);
   const hasSelected = selectedRows.length > 0;
-  const hassSelect = selectedRows.length == 1;  
+  const hassSelect = selectedRows.length == 1;
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
+      setSelectedRowKeys(selectedRowKeys);
+      setDeactivate(true);
+      setSelectedRows(selectedRow);
       if (selectedRow.length === 0) {
-
+        setDeactivate(false);
       }
     }
   };
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
+      setSelectedRowKeys(selectedRowKeys);
+      setDeactivate(true);
+      setToggleActivate(true)
       if (selectedRow.length === 0) {
+        setDeactivate(false);
+        setToggleActivate(false);
       }
     }
   };
@@ -240,21 +236,41 @@ function ClientRead() {
         url: 'https://timesheetjy.azurewebsites.net/api/Admin/EditClientIsActive',
         data: {
           id: element.client_Id,
-        is_Active: false
-        },     
+          is_Active: false
+        },
       }).then((r) => {
+        clientdtl();
+        clientdtl();
+
+        $('#clientisactive');
+
+        if (page == 1) {
+
+          setPage(page);
+
+        }
+
+        else {
+
+          setPage(page - 1);
+
+        }
         //setMessage(r.request.status, element.client_Name + " Deactivated Successfully");
-        const timeoutmsg = setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-        return () => clearTimeout(timeoutmsg);
+        // const timeoutmsg = setTimeout(() => {
+        //   window.location.reload();
+        // }, 1500);
+        return () => clearTimeout();
       })
-      activateDesignation = activateDesignation+element.client_Name+', '; 
+      activateDesignation = activateDesignation + element.client_Name + ', ';
     });
     activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
     debugger
-    setMessage(200, activateDesignation  + " Deactivated Successfully");
-    debugger
+    setMessage(200, activateDesignation + " Deactivated Successfully");
+    setIsActivateModal(false);
+    setToggleActivate(false);
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+    rowSelection = ''
     setIsConfirmModalVisible(false);
   }
 
@@ -307,12 +323,11 @@ function ClientRead() {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
-      
       <Popover position="top" content='Logout'>
-      <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
-      <LogoutOutlined  onClick={navig}   />
-      </button>
-      </Popover>
+     <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+     <LogoutOutlined  onClick={navig}   />
+     </button>
+       </Popover>
       <div style={{ position: "fixed", width: "85%", marginLeft: 250 }}>
         <p style={{ color: "blue", fontSize: 30 }}><b>Configuration</b></p>
         <Row><Col span={2}></Col>
@@ -349,15 +364,15 @@ function ClientRead() {
                   onClick={showDeactivateModal}
                   icon={<CloseCircleOutlined />}
                 >
-                  Deactivate 
+                  Deactivate
                 </Button> </div>
-                <div style={{marginLeft: 20}}>
+              <div style={{ marginLeft: 20 }}>
                 <Button type="primary" icon={<EditOutlined />} title="Edit"
                   hidden={!hassSelect}
-                    onClick={() => {
-                      onEdit();
-                    }} >EDIT</Button>
-                </div>
+                  onClick={() => {
+                    onEdit();
+                  }} >EDIT</Button>
+              </div>
             </Space>
             <div id="clitable" style={{ marginTop: 30 }}>
               <Table
@@ -379,7 +394,7 @@ function ClientRead() {
                 size="small"
                 bordered
                 scroll={{
-                  y:200
+                  y: 200
                 }}
               /></div>
             <Button id="efg"
