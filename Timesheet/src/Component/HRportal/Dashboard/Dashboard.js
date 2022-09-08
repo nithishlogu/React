@@ -1,8 +1,10 @@
 import { VictoryPie } from "victory-pie";
 import axios from "axios";
-import { Layout, Card, Col, Space, Select, Divider, Button } from 'antd';
+import { Layout, Card, Col, Space, Select, Divider, Button,Popover } from 'antd';
 import { useState, useEffect, React } from 'react';
 import { Link, useLocation, useSearchParams } from "react-router-dom";
+import {LogoutOutlined} from '@ant-design/icons';
+import {  useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
 const { Option } = Select;
@@ -16,6 +18,13 @@ const Dashboard = (props) => {
   const [year, setYear] = useState((new Date().getFullYear()));
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [count, setCount] = useState(0);
+  const navigate = useNavigate();
+
+  const navig = () => {
+
+      navigate("/#");
+
+     }
   const toke = sessionStorage.getItem("token");
   const [yrDropdown, setYrDropdown] = useState([]);
   const dphrs = async () => {
@@ -147,7 +156,12 @@ const Dashboard = (props) => {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
-      <div style={{ width: 750, height: 600, marginLeft: 250, marginTop: -20, backgroundColor: "white" }}>
+      <Popover position="top" content='Logout'>
+      <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+      <LogoutOutlined  onClick={navig}   />
+      </button>
+      </Popover>
+      <div style={{ width: 750, height: 600, marginLeft: 250, marginTop: -100, backgroundColor: "white" }}>
         <Layout>
           <Space direction="horizontal">
             <Space direction="horizantal">

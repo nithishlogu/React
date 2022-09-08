@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 // import "antd/dist/antd.css";
-import { Table, Button, Layout } from "antd";
+import { Table, Button, Layout ,Popover} from "antd";
 import { renderMatches, useLocation, Link } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import { Input, Space } from 'antd';
@@ -10,6 +10,8 @@ import Highlighter from 'react-highlight-words';
 import React, { useRef, useState } from 'react';
 import Item from "antd/lib/list/Item";
 import { fixControlledValue } from "antd/lib/input/Input";
+import {LogoutOutlined} from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const Tb2 = () => {
   const { Sider } = Layout;
@@ -21,6 +23,13 @@ const Tb2 = () => {
   const { year } = location.state;
   const currentYear = new Date().getFullYear();
   const toke = sessionStorage.getItem("token");
+  const navigate = useNavigate();
+
+  const navig = () => {
+
+      navigate("/#");
+
+     }
   const currentMonth = new Date().getMonth() + 1;
   const [pagination, setPagination] = useState({
     pageSize: 6,
@@ -139,6 +148,11 @@ const Tb2 = () => {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
+      <Popover position="top" content='Logout'>
+      <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+      <LogoutOutlined  onClick={navig}   />
+      </button>
+      </Popover>
       <h1 style={{ color: 'blue', margin: "5% 2% 0% 4.9%", marginLeft: 270, backgroundColor: "white", position: "fixed", fontSize: '35px' }}>{year} -TIMESHEET  STATUS</h1>
       <div style={{ marginLeft: 250 }}>
         <Table style={{ margin: "0px 800px 900px 400px", marginLeft: '5%', marginTop: "10%", position: "fixed", width: '70%', height: '40%', marginBottom: '10%' }}
