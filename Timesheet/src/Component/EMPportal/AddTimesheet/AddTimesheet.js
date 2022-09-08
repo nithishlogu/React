@@ -2,14 +2,15 @@ import { Modal, Space, Table, Card } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import axios from 'axios';
-import { Select, Input, Button, message } from 'antd';
+import { Select, Input, Button, message,Layout} from 'antd';
 import { UploadOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useDropzone } from 'react-dropzone';
 import './AddTimesheet.css';
 import Project from './Project';
 import Status from './Status';
 import Duration from './Duration';
-import Sidersbar from '../ESidebar';
+
 
 const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
@@ -35,6 +36,7 @@ function AddTimesheet() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [project, setProject] = useState([]);
     const currentDate = new Date();
+    const { Sider } = Layout;
     const month = currentDate.getMonth() - 1;
     const year = currentDate.getFullYear();
     const Day_list = [
@@ -341,7 +343,19 @@ function AddTimesheet() {
 
     return (
         <Space direction='horizantal'>
-            <Sidersbar />
+              <Sider style={{ padding: " 16% 0%", position: "fixed", maxHeight: "100%", backgroundColor: "white", marginLeft: 20, marginTop: -100 }}>
+        <Button type="primary" style={{ width: 200, margin: "0 10%", height: 50, marginTop: 20 }}>
+        <Link to="/EDashboard">Dashboard</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Etimesheetsummary">Timesheet summary</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Eaddtimesheet">Timesheet</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Ehrinfo">HR contact info</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Euserprofile">User Profile</Link>
+        </Button>
+      </Sider>
             <Card style={{ marginLeft: 300 }}>
                 <React.Fragment>
 

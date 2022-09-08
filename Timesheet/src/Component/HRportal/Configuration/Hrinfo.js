@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Input, Space, Form, Modal, Col, Row, Table, Select, message, Card, Layout,Popover } from "antd";
+import { Input, Space, Form, Modal, Col, Row, Table, Select, message, Card, Layout } from "antd";
 import { PlusCircleOutlined, EditOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import Deactivatehrinfo from './Deactivehrinfo';
 import $, { data } from 'jquery';
 import Button from 'antd-button-color';
 import { Checkbox } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import {LogoutOutlined} from '@ant-design/icons';
-import {  useNavigate } from 'react-router-dom';
-
 
 
 
@@ -17,7 +14,7 @@ const { Option } = Select;
 const Hrinfo = () => {
 
   const [deactivate, setDeactivate] = useState(false);
-  const [isActivateModal, setIsActivateModal] = useState(false); 
+  const [isActivateModal, setIsActivateModal] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [toggleActivate, setToggleActivate] = useState(false);
   const { Sider, Content } = Layout;
@@ -34,10 +31,6 @@ const Hrinfo = () => {
   const toke = sessionStorage.getItem("token");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
-  const navigate = useNavigate();
-  const navig = () => {
-       navigate("/#");
-       }
   const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
       message.success(responseMessage, 4);
@@ -100,17 +93,17 @@ const Hrinfo = () => {
       title: 'Contact Info',
       dataIndex: 'hr_Contact_No',
     },
-    {
-      render: (clidtl, actdtl) => {
-        return <>
-          <Button type="primary" icon={<EditOutlined />} title="Edit"
-            onClick={() => {
-              console.log(clidtl);
-              onEdit(clidtl);
-            }} />
-        </>
-      }
-    }
+    // {
+    //   render: (clidtl, actdtl) => {
+    //     return <>
+    //       <Button type="primary" icon={<EditOutlined />} title="Edit"
+    //         onClick={() => {
+    //           console.log(clidtl);
+    //           onEdit(clidtl);
+    //         }} />
+    //     </>
+    //   }
+    // }
   ];
 
 
@@ -194,10 +187,10 @@ const Hrinfo = () => {
       data: addedClient
     }).then((r) => {
       console.log(r);
-     // setMessage(r.request.status, addedClient.hr_Mail_Id + " Added Successfully");
+      // setMessage(r.request.status, addedClient.hr_Mail_Id + " Added Successfully");
       axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAll_HrContactinfo", {
         headers: {
-          'Authorization': `Bearer ${toke}` 
+          'Authorization': `Bearer ${toke}`
         }
       })
         .then(data => setFilteredClient(data.data))
@@ -206,9 +199,16 @@ const Hrinfo = () => {
     })
   }
 
-  const onEdit = (record) => {
+  const [editForm] = Form.useForm();
+  const onEdit = (row) => {
+    editForm.setFieldsValue({
+      hr_Contact_Id: selectedRows[0].hr_Contact_Id,
+      hr_Name: selectedRows[0].hr_Name,
+      hr_Email_Id: selectedRows[0].hr_Email_Id,
+      hr_Contact_No: selectedRows[0].hr_Contact_No,
+    });
+
     setIsEditing(true);
-    setEdtCli(record);
   };
   const resetEditing = () => {
     setIsEditing(false);
@@ -233,7 +233,7 @@ const Hrinfo = () => {
 
     return (
       <>
-        <form>
+        {/* <form>
           <h2 className="edt">EDIT</h2>
           <Row>
             <Col span={5}>
@@ -276,11 +276,34 @@ const Hrinfo = () => {
             </Col>
             <Col span={1}></Col>
           </Row>
-        </form>
+        </form> */}
+        <Form
+          form={editForm}
+          onFinish={(inputData) => editsClient(inputData)}
+        >
+          <Form.Item style={{ marginLeft: 10 }}
+            label='hr_Contact_Id'
+            name='hr_Contact_Id'
+          >
+            <Input style={{ marginLeft: "27px", width: "60px" }} disabled />
+          </Form.Item>
+          <Form.Item
+            label='hr_Contact_No'
+            name='hr_Contact_No'
+
+          >
+            <Input style={{ width: "200px" }} />
+          </Form.Item>
+          <Form.Item>
+            {/* <Button htmlType="cancel" style={{ backgroundColor: "red" }}>Cancel</Button> */}
+            <Button htmlType="submit" style={{ backgroundColor: "lightgreen" }}>Save Changes</Button>
+          </Form.Item>
+        </Form>
       </>
     )
   }
   const editsClient = async (inputData) => {
+    debugger
     console.log(inputData);
     const data = await axios({
       method: 'put',
@@ -309,6 +332,8 @@ const Hrinfo = () => {
 
   const [selectedRows, setSelectedRows] = useState([]);
   const hasSelected = selectedRows.length > 0;
+  const hassSelect = selectedRows.length == 1;
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
@@ -356,10 +381,10 @@ const Hrinfo = () => {
         data: {
           id: element.hr_Contact_Id,
           is_Active: false
-        },     
+        },
       }).then((r) => {
         //setMessage(r.request.status, element.hr_Name + "Deactivated Successfully");
-        
+
         clientdtl();
 
         $('#hrisactive');
@@ -384,11 +409,11 @@ const Hrinfo = () => {
 
         return () => clearTimeout();
       })
-      activateDesignation = activateDesignation+element.hr_Name+', '; 
+      activateDesignation = activateDesignation + element.hr_Name + ', ';
     });
     activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
     debugger
-    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    setMessage(200, activateDesignation + " Deactivated Successfully");
     debugger
     setIsConfirmModalVisible(false);
     setIsActivateModal(false);
@@ -450,11 +475,6 @@ const Hrinfo = () => {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
-      <Popover position="top" content='Logout'>
-     <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
-     <LogoutOutlined  onClick={navig}   />
-     </button>
-       </Popover>
       <div style={{ position: "fixed", width: "85%", marginLeft: 250 }}>
         <p style={{ color: "blue", fontSize: 30 }}><b>Configuration</b></p>
         <div style={{ position: "fixed", width: "85%" }}>
@@ -492,6 +512,16 @@ const Hrinfo = () => {
                   >
                     Deactivate
                   </Button></div>
+
+                {/* EDIT ==================>*/}
+
+                <div style={{ marginLeft: 20 }}>
+                  <Button type="primary" icon={<EditOutlined />} title="Edit"
+                    hidden={!hassSelect}
+                    onClick={() => {
+                      onEdit();
+                    }} >EDIT</Button>
+                </div>
               </Space>
               <div id="hrtable" style={{ marginTop: 15, marginLeft: -180 }}>
                 <Table
@@ -537,16 +567,17 @@ const Hrinfo = () => {
             </div>
             <Modal
               visible={isEditing}
-              okText="Save Changes"
+              //okText="Save Changes"
               okButtonProps={{ background: "#52c41a" }}
               width={750}
               onCancel={() => {
                 resetEditing()
               }}
-              onOk={() => {
-                editsClient(edtCli)
-                resetEditing()
-              }}
+              footer={false}
+            // onOk={() => {
+            //   editsClient(edtCli)
+            //   resetEditing()
+            // }}
             >
               <EditProjects
                 dtl={edtCli}

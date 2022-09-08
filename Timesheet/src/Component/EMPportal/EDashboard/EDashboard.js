@@ -81,7 +81,7 @@ debugger;
                 </div>
                 <br /><br /><br />
                 <div>
-                    <CloseCircleOutlined style={{ marginTop: -90, marginLeft: 780, fontSize: 80, color: "red", position: "fixed" }} />
+                    <CloseCircleOutlined style={{ marginTop: -75, marginLeft: 780, fontSize: 60, color: "red", position: "fixed" }} />
                 </div>
                 <div style={{ marginLeft: 350 }}>
                     <Space direction="horizontal">
