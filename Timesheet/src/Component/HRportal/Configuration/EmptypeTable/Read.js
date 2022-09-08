@@ -1,3 +1,5 @@
+// 
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Input, Space, Button, Form, Modal, Col, Row, Card, Table, message, Layout } from "antd";
@@ -12,7 +14,11 @@ function ReadEmpType() {
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [toggleActivate, setToggleActivate] = useState(false);
+  const [deactivate, setDeactivate] = useState(false);
   const { Sider, Content } = Layout;
+  const [isActivateModal, setIsActivateModal] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [clientDataSource, setClientDataSoure] = useState([]);
   const [filteredClient, setFilteredClient] = useState([]);
@@ -260,15 +266,23 @@ function ReadEmpType() {
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
+      setSelectedRowKeys(selectedRowKeys);
+      setDeactivate(true);
+      setSelectedRows(selectedRow);
       if (selectedRow.length === 0) {
-
+        setDeactivate(false);
       }
     }
   };
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
+      setSelectedRowKeys(selectedRowKeys);
+      setDeactivate(true);
+      setToggleActivate(true)
       if (selectedRow.length === 0) {
+        setDeactivate(false);
+        setToggleActivate(false);
       }
     }
   };
@@ -301,13 +315,29 @@ function ReadEmpType() {
         data: {
           id: element.employee_Type_Id,
           is_Active: false
-        },     
+        },
       }).then((r) => {
+        clientdtl();
+
+        $('#clientisactive');
+
+        if (page == 1) {
+
+          setPage(page);
+
+        }
+
+        else {
+
+          setPage(page - 1);
+
+        }
+
         // setMessage(r.request.status, element.employee_Type_Name + " - Deactivated Successfully");
-        const timeout = setTimeout(() => {
-          //console.log('hii after 2 seconds');
-          window.location.reload();
-        }, 1500);
+        // const timeout = setTimeout(() => {
+        //console.log('hii after 2 seconds');
+        //   window.location.reload();
+        // }, 1500);
         // window.location.reload();
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAllEmployeetype", {
           headers: {
@@ -315,14 +345,19 @@ function ReadEmpType() {
           }
         })
           .then(data => setFilteredClient(data.data));
-        return () => clearTimeout(timeout);
+        return () => clearTimeout();
       })
-      activateDesignation = activateDesignation+element.employee_Type_Name+', '; 
+      activateDesignation = activateDesignation + element.employee_Type_Name + ', ';
     });
     activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
     debugger
-    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    setMessage(200, activateDesignation + " Deactivated Successfully");
     debugger
+    setIsActivateModal(false);
+    setToggleActivate(false);
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+    rowSelection = ''
     setIsConfirmModalVisible(false);
   }
 
@@ -445,27 +480,27 @@ function ReadEmpType() {
                   console.log('validate Field:', info);
                 });
             }}
-            width={400}
-                          onCancel={buttonCancel}
-                          visible={isModalVisible}
-                          footer={[
-                            <Button
-                              type="danger"
-                              onClick={buttonCancel}
-                            >Cancel</Button>,
-                            <Button
-                              type="primary"
-                              onClick={() => {
-                                form.validateFields().then((values) => {
-                                  buttonOk(values)
-                                  form.resetFields();
-                                })
-                                  .catch((info) => {
-                                    console.log('validate Field:', info);
-                                  });
-                              }}
-                            >ok</Button>
-                              ]}
+              width={400}
+              onCancel={buttonCancel}
+              visible={isModalVisible}
+              footer={[
+                <Button
+                  type="danger"
+                  onClick={buttonCancel}
+                >Cancel</Button>,
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.validateFields().then((values) => {
+                      buttonOk(values)
+                      form.resetFields();
+                    })
+                      .catch((info) => {
+                        console.log('validate Field:', info);
+                      });
+                  }}
+                >ok</Button>
+              ]}
             >
               <AddClient />
             </Modal>
