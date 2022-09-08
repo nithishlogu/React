@@ -544,4 +544,4 @@ function ReadEmpType() {
     </>
   )
 }
-export default ReadEmpType;
+export default ReadEmpType ;
