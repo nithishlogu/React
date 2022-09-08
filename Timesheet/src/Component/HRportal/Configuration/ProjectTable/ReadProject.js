@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Select, Typography } from 'antd';
 import { PlusCircleOutlined, EditOutlined, CloseCircleOutlined,CheckCircleOutlined, ClockCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { Modal, Table, Input, Space, DatePicker, Form, message, Popover, Layout, Row, Col, Card } from 'antd';
 import { Button } from 'antd';
 import { Checkbox, Label } from 'semantic-ui-react';
 import moment from 'moment';
+import {LogoutOutlined} from '@ant-design/icons';
+import {  useNavigate } from 'react-router-dom';
+
 const { Search } = Input;
 
 function ReadProject() {
@@ -43,12 +45,16 @@ function ReadProject() {
     const [toggleActivate, setToggleActivate] = useState(false);
     const [dataSource, setDataSource] = useState('');
     const navigate = useNavigate();
+    const navig = () => {
+         navigate("/#");
+         }
     const [startValue, setStartValue] = useState(null);
     const [endValue, setEndValue] = useState(null);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(4);
     const [page1, setPage1] = useState(1);
     const [pageSize1, setPageSize1] = useState(4);
+    
     const toke = sessionStorage.getItem("token");
 
     // const addProjectForm = Form.useForm();
@@ -509,6 +515,11 @@ function ReadProject() {
                     <Link to="/userprofile"><b>User Profile</b></Link>
                 </Button>
             </Sider>
+            <Popover position="top" content='Logout'>
+              <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+                <LogoutOutlined  onClick={navig}   />
+              </button>
+             </Popover>
             <div style={{ position: "fixed", width: "85%", marginLeft: 250 }}>
                 <p style={{ color: "blue", fontSize: 30 }}><b>Configuration</b></p>
                 <Row><Col span={2}></Col>

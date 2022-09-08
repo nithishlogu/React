@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Input, Space, Button, Form, Modal, Col, Row, Card, Table, message, Layout } from "antd";
+import { Input, Space, Button, Form, Modal, Col, Row, Card, Table, message, Layout ,Popover} from "antd";
 import { Checkbox, Label } from 'semantic-ui-react';
 import { PlusCircleOutlined, EditOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import Readdeactivated from "./Readdeactivated";
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
+import {LogoutOutlined} from '@ant-design/icons';
+import {  useNavigate } from 'react-router-dom';
+
 
 function ReadJob() {
 
@@ -26,6 +29,10 @@ function ReadJob() {
   const [edtCli, setEdtCli] = useState([]);
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
+  const navigate = useNavigate();
+  const navig = () => {
+       navigate("/#");
+       }
   const [pagination, setPagination] = useState({
     pageSize: 5,
   });
@@ -412,6 +419,11 @@ function ReadJob() {
           <Link to="/userprofile"><b>User Profile</b></Link>
         </Button>
       </Sider>
+      <Popover position="top" content='Logout'>
+     <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+     <LogoutOutlined  onClick={navig}   />
+     </button>
+       </Popover>
       <div style={{ position: "fixed", width: "85%", marginLeft: 250 }}>
         <p style={{ color: "blue", fontSize: 30 }}><b>Configuration</b></p>
         <Row><Col span={2}></Col>
