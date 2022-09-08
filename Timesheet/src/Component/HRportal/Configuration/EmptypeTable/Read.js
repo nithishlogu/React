@@ -86,18 +86,14 @@ function ReadEmpType() {
       title: 'No of employees',
       dataIndex: 'no_of_Employees',
     },
-    {
-      key: '11',
-      render: (clidtl, actdtl) => {
-        return <>
-          <Button type="primary" icon={<EditOutlined />} title="Edit"
-            onClick={() => {
-              console.log(clidtl);
-              onEdit(clidtl);
-            }} />
-        </>
-      }
-    },
+    // {
+    //   key: '11',
+    //   render: (clidtl, actdtl) => {
+    //     return <>
+
+    //     </>
+    //   }
+    // },
   ];
 
   const showAddData = () => {
@@ -185,8 +181,8 @@ function ReadEmpType() {
     const [emptypeedit] = Form.useForm();
 
     emptypeedit.setFieldsValue({
-      employee_Type_Id: dtl.dtl.employee_Type_Id,
-      employee_Type_Name: dtl.dtl.employee_Type_Name
+      employee_Type_Id: selectedRows[0].employee_Type_Id,
+      employee_Type_Name: selectedRows[0].employee_Type_Name
     })
 
     const empsubmit = async (e) => {
@@ -263,6 +259,7 @@ function ReadEmpType() {
 
   const [selectedRows, setSelectedRows] = useState([]);
   const hasSelected = selectedRows.length > 0;
+  const hassSelected = selectedRows.length == 1;
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
@@ -445,6 +442,14 @@ function ReadEmpType() {
                 >
                   Deactivate
                 </Button></div>
+              <div style={{ marginLeft: "1700%" }}>
+                <Button type="primary" icon={<EditOutlined />} title="Edit"
+                  onClick={() => {
+
+                    onEdit();
+                  }}
+                  hidden={!hassSelected} />
+              </div>
             </Space>
             <div id="emptypetable" style={{ marginTop: 30 }}>
               <Table

@@ -8,7 +8,7 @@ import $ from 'jquery';
 import { Link } from 'react-router-dom';
 
 function ReadJob() {
- 
+
   const [deactivate, setDeactivate] = useState(false);
   const [isActivateModal, setIsActivateModal] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -85,18 +85,18 @@ function ReadJob() {
       title: 'No of employees',
       dataIndex: 'no_of_Employees',
     },
-    {
-      key: '11',
-      render: (clidtl, actdtl) => {
-        return <>
-          <Button type="primary" icon={<EditOutlined />} title="Edit"
-            onClick={() => {
-              console.log(clidtl);
-              onEdit(clidtl);
-            }} />
-        </>
-      }
-    },
+    // {
+    //   key: '11',
+    //   render: (clidtl, actdtl) => {
+    //     return <>
+    //       <Button type="primary" icon={<EditOutlined />} title="Edit"
+    //         onClick={() => {
+    //           console.log(clidtl);
+    //           onEdit(clidtl);
+    //         }} />
+    //     </>
+    //   }
+    // },
   ];
 
   const showAddData = () => {
@@ -182,8 +182,9 @@ function ReadJob() {
     const [designationedit] = Form.useForm();
 
     designationedit.setFieldsValue({
-      designation_Id: dtl.dtl.designation_Id,
-      designation_Name: dtl.dtl.designation_Name
+
+      designation_Id: selectedRows[0].designation_Id,
+      designation_Name: selectedRows[0].designation_Name
     })
 
     const designationsubmit = async (e) => {
@@ -225,7 +226,7 @@ function ReadJob() {
         debugger
       })
     }
-    
+
 
     return (
       <>
@@ -265,10 +266,11 @@ function ReadJob() {
 
   const [selectedRows, setSelectedRows] = useState([]);
   const hasSelected = selectedRows.length > 0;
+  const hassSelected = selectedRows.length == 1;
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
-      
+
       setSelectedRowKeys(selectedRowKeys);
       setDeactivate(true);
       setSelectedRows(selectedRow);
@@ -280,7 +282,7 @@ function ReadJob() {
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
-     
+
       setSelectedRowKeys(selectedRowKeys);
       setDeactivate(true);
       setToggleActivate(true)
@@ -320,7 +322,7 @@ function ReadJob() {
         data: {
           id: element.designation_Id,
           is_Active: false
-        },     
+        },
       }).then((r) => {
         clientdtl();
 
@@ -329,7 +331,7 @@ function ReadJob() {
         if (page == 1) {
 
           setPage(page);
- 
+
         }
 
         else {
@@ -340,18 +342,18 @@ function ReadJob() {
         // debugger
         //setMessage(r.request.status, element.designation_Name + "- Deactivated Successfully");
         // debugger
-                
+
         //window.location.reload();
         //$('#jobisactive').hide();
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAllDesignation")
           .then(data => setFilteredClient(data.data));
       })
-      activateDesignation = activateDesignation+element.designation_Name+', '; 
+      activateDesignation = activateDesignation + element.designation_Name + ', ';
     });
     //window.location.reload();
     activateDesignation = activateDesignation.substring(0, activateDesignation.length - 2) + " ";
     debugger
-    setMessage(200, activateDesignation  + " Deactivated Successfully");
+    setMessage(200, activateDesignation + " Deactivated Successfully");
     debugger
     setIsActivateModal(false);
     setToggleActivate(false);
@@ -446,6 +448,12 @@ function ReadJob() {
                 >
                   Deactivate
                 </Button></div>
+              <div style={{ marginLeft: "1700%" }}>
+                <Button type="primary" icon={<EditOutlined />} title="Edit"
+                  onClick={() => {
+                    onEdit();
+                  }} hidden={!hassSelected} />
+              </div>
             </Space>
             <div id="destable" style={{ marginTop: 30 }}>
               <Table
@@ -481,27 +489,27 @@ function ReadJob() {
                   console.log('validate Field:', info);
                 });
             }}
-            width={400}
-                          onCancel={buttonCancel}
-                          visible={isModalVisible}
-                          footer={[
-                            <Button
-                              type="danger"
-                              onClick={buttonCancel}
-                            >Cancel</Button>,
-                            <Button
-                              type="primary"
-                              onClick={() => {
-                                form.validateFields().then((values) => {
-                                  buttonOk(values)
-                                  form.resetFields();
-                                })
-                                  .catch((info) => {
-                                    console.log('validate Field:', info);
-                                  });
-                              }}
-                            >ok</Button>
-                              ]}
+              width={400}
+              onCancel={buttonCancel}
+              visible={isModalVisible}
+              footer={[
+                <Button
+                  type="danger"
+                  onClick={buttonCancel}
+                >Cancel</Button>,
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.validateFields().then((values) => {
+                      buttonOk(values)
+                      form.resetFields();
+                    })
+                      .catch((info) => {
+                        console.log('validate Field:', info);
+                      });
+                  }}
+                >ok</Button>
+              ]}
             >
               <AddClient />
             </Modal>
