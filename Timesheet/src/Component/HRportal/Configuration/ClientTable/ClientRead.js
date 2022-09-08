@@ -8,7 +8,8 @@ import $ from 'jquery';
 import { Link } from 'react-router-dom';
 import { Checkbox } from 'semantic-ui-react';
 import {LogoutOutlined} from '@ant-design/icons';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
+
 
 function ClientRead() {
 
@@ -24,10 +25,18 @@ function ClientRead() {
   const [isactive, setIsActive] = useState(false);
   const [actCli, setActCli] = useState([]);
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
+  const navig = () => {
+
+      navigate("/#");
+
+     }
+ 
+ 
 
   const [pageSize, setPageSize] = useState(10);
-
+ 
   const toke = sessionStorage.getItem("token");
   const setMessage = (statusCode, responseMessage) => {
     if (statusCode == 200) {
@@ -299,7 +308,11 @@ function ClientRead() {
         </Button>
       </Sider>
       
-     
+      <Popover position="top" content='Logout'>
+      <button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'91%',marginTop:'2%'}}>
+      <LogoutOutlined  onClick={navig}   />
+      </button>
+      </Popover>
       <div style={{ position: "fixed", width: "85%", marginLeft: 250 }}>
         <p style={{ color: "blue", fontSize: 30 }}><b>Configuration</b></p>
         <Row><Col span={2}></Col>

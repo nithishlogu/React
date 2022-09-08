@@ -51,7 +51,7 @@ const Userprofile = () => {
         <div style={{ marginLeft: 200, marginTop: 30 }}>
         <Popover position="top" content='Logout'>
 
-<button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'140%',marginTop:'2%'}}>
+<button style={{width:'5em',backgroundColor:'#f77c7c',marginLeft:'144%',marginTop:'5%'}}>
 <LogoutOutlined  onClick={navig}   />
 </button>
  </Popover>
