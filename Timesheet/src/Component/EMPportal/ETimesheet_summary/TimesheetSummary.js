@@ -1,7 +1,7 @@
 import "antd/dist/antd.css";
 import React, { Component } from 'react';
 import { useState } from "react";
-import { Table, Tag, Layout, Space } from "antd";
+import { Table, Tag, Layout, Space,Button } from "antd";
 import axios from 'axios';
 import { useEffect } from "react";
 import { Link } from 'react-router-dom';
@@ -66,15 +66,25 @@ function TimesheetSummary() {
 
   return (
     <Space direction="horizantal">
-      <Sider style={{ height: "200%", width: 200 }}>
-        <Sidersbar />
+      <Sider style={{ padding: " 16% 0%", position: "fixed", maxHeight: "100%", backgroundColor: "white", marginLeft: 20, marginTop: -100 }}>
+        <Button type="primary" style={{ width: 200, margin: "0 10%", height: 50, marginTop: 20 }}>
+        <Link to="/EDashboard">Dashboard</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Etimesheetsummary">Timesheet summary</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Eaddtimesheet">Timesheet</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Ehrinfo">HR contact info</Link>
+        </Button><Button style={{ margin: "0 10%", width: 200, height: 50 }}>
+        <Link to="/Euserprofile">User Profile</Link>
+        </Button>
       </Sider>
-      <div className="App">
+      <div style={{ marginLeft: "250px" ,marginTop:"100px"}} className="App">
         <h1 style={{ color: 'Blue' }}> TIMESHEET  SUMMARY</h1>
         <header className="App-header">
           {/* <button onClick={onAdd}>add</button> */}
 
-          <Table style={{ marginleft: "50px" }}
+          <Table style={{ marginLeft: "50px" }}
             pagination={false}
             columns={columns}
             dataSource={dataSource}
