@@ -117,7 +117,13 @@ function Deactivatehrinfo() {
       }).then((r) => {
         // setMessage(r.request.status, element.hr_Name + "Activated Successfully");
         $("#hractbtn").hide();
-     
+        if(page == 1)
+        {
+          setPage(page);
+        }
+        else{          
+        setPage(page - 1);
+        }
 
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetHrContactInfoeIs_Active", {
           headers: {

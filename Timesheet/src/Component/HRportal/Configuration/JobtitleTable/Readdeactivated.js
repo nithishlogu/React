@@ -137,6 +137,13 @@ function Readdeactivated() {
         })
           .then(data => setFilteredClient(data.data))
           $('#cliactbtn').hide();
+          if(page == 1)
+          {
+            setPage(page);
+          }
+          else{          
+          setPage(page - 1);
+          }
         
       })
       console.log(element.hr_Name)

@@ -347,13 +347,8 @@ function Readdeactivated() {
           is_Active: true
         },
       }).then((r) => {
+        
         // setMessage(r.request.status, element.employee_Type_Name + " - Activated Successfully");
-
-        // const timeout = setTimeout(() => {
-        //   //console.log('hii after 2 seconds');
-        //   window.location.reload();
-        // }, 1500);
-
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetEmployeetypeIs_Active", {
           headers: {
             'Authorization': `Bearer ${toke}`
@@ -367,7 +362,7 @@ function Readdeactivated() {
         else {
           setPage(page - 1);
         }
-        //return () => clearTimeout(timeout);
+        return () => clearTimeout();
       })
       console.log(element.employee_Type_Name)
       debugger

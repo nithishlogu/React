@@ -13,6 +13,10 @@ import { Link } from 'react-router-dom';
 const { Option } = Select;
 const Hrinfo = () => {
 
+  const [deactivate, setDeactivate] = useState(false);
+  const [isActivateModal, setIsActivateModal] = useState(false); 
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [toggleActivate, setToggleActivate] = useState(false);
   const { Sider, Content } = Layout;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [clientDataSource, setClientDataSoure] = useState([]);
@@ -309,7 +313,12 @@ const Hrinfo = () => {
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
+      setSelectedRowKeys(selectedRowKeys);
+      setDeactivate(true);
+      setToggleActivate(true)
       if (selectedRow.length === 0) {
+        setDeactivate(false);
+        setToggleActivate(false);
       }
     }
   };
@@ -343,10 +352,22 @@ const Hrinfo = () => {
         },     
       }).then((r) => {
         //setMessage(r.request.status, element.hr_Name + "Deactivated Successfully");
-        const timeoutmsg = setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-        $('#hrisactive').hide();
+        
+        clientdtl();
+
+        $('#hrisactive');
+
+        if (page == 1) {
+
+          setPage(page);
+
+        }
+
+        else {
+
+          setPage(page - 1);
+
+        }
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAll_HrContactinfo", {
           headers: {
             'Authorization': `Bearer ${toke}`
@@ -354,7 +375,7 @@ const Hrinfo = () => {
         })
           .then(data => setFilteredClient(data.data));
 
-        return () => clearTimeout(timeoutmsg);
+        return () => clearTimeout();
       })
       activateDesignation = activateDesignation+element.hr_Name+', '; 
     });
@@ -362,6 +383,12 @@ const Hrinfo = () => {
     debugger
     setMessage(200, activateDesignation  + " Deactivated Successfully");
     debugger
+    setIsConfirmModalVisible(false);
+    setIsActivateModal(false);
+    setToggleActivate(false);
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+    rowSelection = ''
     setIsConfirmModalVisible(false);
   }
 

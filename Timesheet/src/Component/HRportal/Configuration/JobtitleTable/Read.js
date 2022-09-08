@@ -8,7 +8,11 @@ import $ from 'jquery';
 import { Link } from 'react-router-dom';
 
 function ReadJob() {
-
+ 
+  const [deactivate, setDeactivate] = useState(false);
+  const [isActivateModal, setIsActivateModal] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [toggleActivate, setToggleActivate] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const { Sider, Content } = Layout;
@@ -264,15 +268,25 @@ function ReadJob() {
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
+      
+      setSelectedRowKeys(selectedRowKeys);
+      setDeactivate(true);
+      setSelectedRows(selectedRow);
       if (selectedRow.length === 0) {
-
+        setDeactivate(false);
       }
     }
   };
   const SelectionRow = {
     onChange: (selectedRowKeys, selectedRow) => {
       setSelectedRows(selectedRow);
+     
+      setSelectedRowKeys(selectedRowKeys);
+      setDeactivate(true);
+      setToggleActivate(true)
       if (selectedRow.length === 0) {
+        setDeactivate(false);
+        setToggleActivate(false);
       }
     }
   };
@@ -290,7 +304,7 @@ function ReadJob() {
   };
 
   const handleConfirmOk = () => {
-    //setIsConfirmModalVisible(false);
+    setIsConfirmModalVisible(false);
     var activateDesignation = '';
 
     selectedRows.forEach(element => {
@@ -308,12 +322,27 @@ function ReadJob() {
           is_Active: false
         },     
       }).then((r) => {
+        clientdtl();
+
+        $('#jobisactive');
+
+        if (page == 1) {
+
+          setPage(page);
+ 
+        }
+
+        else {
+
+          setPage(page - 1);
+
+        }
         // debugger
         //setMessage(r.request.status, element.designation_Name + "- Deactivated Successfully");
         // debugger
                 
         //window.location.reload();
-        $('#jobisactive').hide();
+        //$('#jobisactive').hide();
         axios("https://timesheetjy.azurewebsites.net/api/Admin/GetAllDesignation")
           .then(data => setFilteredClient(data.data));
       })
@@ -324,12 +353,17 @@ function ReadJob() {
     debugger
     setMessage(200, activateDesignation  + " Deactivated Successfully");
     debugger
+    setIsActivateModal(false);
+    setToggleActivate(false);
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+    rowSelection = ''
     setIsConfirmModalVisible(false);
 
-    const timeout1 = setTimeout(() => {
-      window.location.reload();
-    }, 1500);  
-    return () => clearTimeout(timeout1);
+    // const timeout1 = setTimeout(() => {
+    //   window.location.reload();
+    // }, 1500);  
+    return () => clearTimeout();
   }
 
   useEffect(() => {
