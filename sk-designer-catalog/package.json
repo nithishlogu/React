@@ -1,0 +1,22 @@
+{
+  "name": "sk-designer-catalog",
+  "version": "1.0.0",
+  "description": "Digital catalog for SK Designer Studio",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 3000",
+    "dev": "python3 -m http.server 3000",
+    "serve": "python3 -m http.server 3000"
+  },
+  "keywords": [
+    "design",
+    "catalog",
+    "portfolio",
+    "studio",
+    "digital"
+  ],
+  "author": "SK Designer Studio",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}

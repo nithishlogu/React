@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Designer Studio - Digital Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1>SK Designer Studio</h1>
+                <p>Digital Catalog</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Welcome to SK Designer Studio</h2>
+            <p>Discover our collection of innovative design solutions and creative projects</p>
+            <button class="cta-button" onclick="scrollToSection('portfolio')">Explore Portfolio</button>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2>Our Portfolio</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-image">
+                        <div class="placeholder-image">Project 1</div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Modern Web Design</h3>
+                        <p>Contemporary web design with clean aesthetics and user-focused functionality.</p>
+                        <span class="category">Web Design</span>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-image">
+                        <div class="placeholder-image">Project 2</div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Brand Identity</h3>
+                        <p>Complete brand identity design including logo, color palette, and typography.</p>
+                        <span class="category">Branding</span>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-image">
+                        <div class="placeholder-image">Project 3</div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Mobile App UI</h3>
+                        <p>Intuitive mobile application interface design with modern UX principles.</p>
+                        <span class="category">Mobile Design</span>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-image">
+                        <div class="placeholder-image">Project 4</div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Print Design</h3>
+                        <p>Elegant print materials including business cards, brochures, and marketing collateral.</p>
+                        <span class="category">Print Design</span>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-image">
+                        <div class="placeholder-image">Project 5</div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>E-commerce Platform</h3>
+                        <p>Complete e-commerce solution with seamless shopping experience and modern design.</p>
+                        <span class="category">E-commerce</span>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <div class="portfolio-image">
+                        <div class="placeholder-image">Project 6</div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Social Media Graphics</h3>
+                        <p>Engaging social media content and graphics that drive brand awareness and engagement.</p>
+                        <span class="category">Social Media</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🎨</div>
+                    <h3>Graphic Design</h3>
+                    <p>Creative visual solutions for your brand including logos, posters, and marketing materials.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Web Design</h3>
+                    <p>Modern, responsive websites that engage your audience and drive conversions.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>Mobile Design</h3>
+                    <p>User-friendly mobile app interfaces designed for optimal user experience.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🏢</div>
+                    <h3>Brand Identity</h3>
+                    <p>Complete brand identity packages that tell your unique story and connect with customers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Let's Create Something Amazing Together</h3>
+                    <p>Ready to bring your vision to life? Contact us to discuss your project and see how we can help your business grow.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <strong>Email:</strong> info@skdesignerstudio.com
+                        </div>
+                        <div class="contact-item">
+                            <strong>Phone:</strong> +1 (555) 123-4567
+                        </div>
+                        <div class="contact-item">
+                            <strong>Location:</strong> Your City, Country
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Project Type">
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Tell us about your project" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>SK Designer Studio</h3>
+                    <p>Creating beautiful, functional designs that make a difference.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#portfolio">Portfolio</a>
+                    <a href="#services">Services</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 SK Designer Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
